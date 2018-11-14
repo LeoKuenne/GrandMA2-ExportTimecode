@@ -44,7 +44,7 @@ namespace ExportReaperMarkersToGrandMA2
                     temp = sr.ReadLine();
                 }
 
-                timecode = new Timecode(num_SeqPage.Value+"."+num_SeqItem.Value, txt_SeqName.Text,(int) num_TcFrameRate.Value);
+                timecode = new Timecode((int)num_SeqPage.Value, (int)num_SeqItem.Value, txt_SeqName.Text, (int)num_TcItem.Value, txt_TcName.Text, (int)num_TcFrameRate.Value);
                 timecode.parseCSV(csv.ToArray());
 
                 gB_Save.Visible = true;
@@ -52,6 +52,17 @@ namespace ExportReaperMarkersToGrandMA2
             }
 
             
+        }
+
+        private void btn_Save_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                txt_Save.Text = folderBrowserDialog.SelectedPath;
+                timecode.writeXML(folderBrowserDialog.SelectedPath);
+            }
+
         }
     }
 }
