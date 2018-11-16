@@ -9,40 +9,38 @@ namespace ExportReaperMarkersToGrandMA2
 {
     class TimecodeEvent
     {
-        string Name { get; set; }
-        int Time { get; set; }
-        int Page { get; set; }
-        int Seq { get; set; }
-        int Cue { get; set; }
-        int Index { get; set; }
+        public string Name { get; set; }
+        public int Time { get; set; }
+        public int Seq { get; set; }
+        public int Cue { get; set; }
+        public int Index { get; set; }
         
-        public TimecodeEvent(string n, int t, int s, int c, int i, int p)
+        public TimecodeEvent(int index, int seqitem, int cue, int time, string name)
         {
-            this.Name = n;
-            this.Time = t;
-            this.Seq = s;
-            this.Cue = c;
-            this.Page = p;
-            this.Index = i;
+            this.Name = name;
+            this.Time = time;
+            this.Seq = seqitem;
+            this.Cue = cue;
+            this.Index = index;
         }
 
-        public static TimecodeEvent parseCSV(string v, string[] names, int fps, int index, int seq, int page)
+        public static TimecodeEvent ParseCSV(int index, string values, string[] names, int page, int seq, int fps)
         {
-            string[] values = v.Split(',');
-            int posName = Array.IndexOf(names, "Name");
-            int posTime = Array.IndexOf(names, "Start");
-            int posCount = Array.IndexOf(names, "#");
+            string[] Values = values.Split(',');
+            int PosName = Array.IndexOf(names, "Name");
+            int PosTime = Array.IndexOf(names, "Start");
+            int PosCount = Array.IndexOf(names, "#");
 
             //HH:MM:SS:FF
-            string[] t = values[posTime].Split(':');
-            int frames = int.Parse(t[3]);
-            int seconds = int.Parse(t[2]) * 30;
-            int minutes = int.Parse(t[1]) * 30 * 60;
-            int hours = int.Parse(t[0]) * 30 * 60 * 60;
-            int time = frames + seconds + minutes + hours;
+            string[] Times = Values[PosTime].Split(':');
+            int Frames = int.Parse(Times[3]);
+            int Seconds = int.Parse(Times[2]) * 30;
+            int Minutes = int.Parse(Times[1]) * 30 * 60;
+            int Hours = int.Parse(Times[0]) * 30 * 60 * 60;
+            int Time = Frames + Seconds + Minutes + Hours;
 
 
-            return new TimecodeEvent(values[posName], time, seq, int.Parse(values[posCount].Substring(1)), index, page);
+            return new TimecodeEvent(index, seq, int.Parse(Values[PosCount].Substring(1)), Time, Values[PosName]);
         }
 
         public override String ToString()
@@ -60,16 +58,19 @@ namespace ExportReaperMarkersToGrandMA2
             nodeEvent_Time.Value = Time.ToString();
 
             XmlAttribute nodeEvent_Step = doc.CreateAttribute("step");
-            nodeEvent_Step.Value = (Index++).ToString();
+            nodeEvent_Step.Value = (Index+1).ToString();
 
             XmlAttribute nodeEvent_Command = doc.CreateAttribute("command");
             nodeEvent_Command.Value = "Goto";
 
+            XmlAttribute nodeEvent_Pressed = doc.CreateAttribute("pressed");
+            nodeEvent_Pressed.Value = "true";
 
             nodeEvent.Attributes.Append(nodeEvent_Index);
             nodeEvent.Attributes.Append(nodeEvent_Time);
             nodeEvent.Attributes.Append(nodeEvent_Step);
             nodeEvent.Attributes.Append(nodeEvent_Command);
+            nodeEvent.Attributes.Append(nodeEvent_Pressed);
             nodeparent.AppendChild(nodeEvent);
 
             XmlNode nodeCue = doc.CreateElement("Cue");
@@ -80,7 +81,7 @@ namespace ExportReaperMarkersToGrandMA2
             nodeEvent.AppendChild(nodeCue);
 
             XmlNode nodeNoPage = doc.CreateElement("No");
-            nodeNoPage.InnerText = Page.ToString();
+            nodeNoPage.InnerText = "1";
             XmlNode nodeNoSeq = doc.CreateElement("No");
             nodeNoSeq.InnerText = Seq.ToString();
             XmlNode nodeNoCue = doc.CreateElement("No");

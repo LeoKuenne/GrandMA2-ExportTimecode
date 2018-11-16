@@ -11,25 +11,28 @@ namespace ExportReaperMarkersToGrandMA2
     {
         TimecodeEvent[] timecodeEvents { get; set; }
 
-        int Page { get; set; }
-        int Seq { get; set; }
-        string SeqName { get; set; }
-        int Tc { get; set; }
-        string TcName { get; set; }
-        int FrameRate { get; set; }
+        private int Page;
+        private int Exec;
+        private int Seq;
+        private string SeqName;
+        private int Tc;
+        private string TcName;
+        private int FrameRate;
+        
 
-        public Timecode(int p, int s, string sname, int tc, string tcname, int framerate)
+        public Timecode(int page, int exec, int seq, string seqname, int tc, string tcname, int framerate)
         {
-            this.Page = p;
-            this.Seq = s;
-            this.SeqName = sname;
-            this.FrameRate = framerate;
+            this.Page = page;
+            this.Exec = exec;
+            this.Seq = seq;
+            this.SeqName = seqname;
             this.Tc = tc;
             this.TcName = tcname;
+            this.FrameRate = framerate;
 
         }
 
-        public void parseCSV(string[] csvtext)
+        public void ParseCSV(string[] csvtext)
         {
             string[] names = csvtext[0].Split(',');
 
@@ -37,7 +40,7 @@ namespace ExportReaperMarkersToGrandMA2
 
             for (int i = 0; i < csvtext.Length-1; i++)
             {
-                timecodeEvents[i] = TimecodeEvent.parseCSV(csvtext[i+1], names, FrameRate, i, Seq, Page);
+                timecodeEvents[i] = TimecodeEvent.ParseCSV(i, csvtext[i + 1], names, GetPage(), GetSeq(), GetFrameRate());
             }
 
         }
@@ -45,6 +48,9 @@ namespace ExportReaperMarkersToGrandMA2
         public void writeXML(String path)
         {
             XmlDocument xmlDoc = new XmlDocument();
+
+            xmlDoc.AppendChild(xmlDoc.CreateXmlDeclaration("1.0", "UTF-8",null));
+            xmlDoc.AppendChild(xmlDoc.CreateProcessingInstruction("xml-stylesheet", "type='text/xsl' href='styles/timecode@sheet.xsl'"));
 
             XmlNode nodeMA = xmlDoc.CreateElement("MA");
 
@@ -62,15 +68,27 @@ namespace ExportReaperMarkersToGrandMA2
             nodeMA.Attributes.Append(nodeMAAttribute_XSI);
             xmlDoc.AppendChild(nodeMA);
 
+            XmlNode nodeInfo = xmlDoc.CreateElement("Info");
+            XmlAttribute nodeInfoAttribute_DateTime = xmlDoc.CreateAttribute("index");
+            nodeInfoAttribute_DateTime.Value = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            XmlAttribute nodeInfoAttribute_Showfile = xmlDoc.CreateAttribute("name");
+            nodeInfoAttribute_Showfile.Value = "ExportReaperMarkerToGrandMA2";
+
+            nodeInfo.Attributes.Append(nodeInfoAttribute_DateTime);
+            nodeInfo.Attributes.Append(nodeInfoAttribute_Showfile);
+            nodeMA.AppendChild(nodeInfo);
+
+
             XmlNode nodeTimecode = xmlDoc.CreateElement("Timecode");
             XmlAttribute nodeTimecodeAttribute_Index = xmlDoc.CreateAttribute("index");
             nodeTimecodeAttribute_Index.Value = "0";
 
             XmlAttribute nodeTimecodeAttribute_Name = xmlDoc.CreateAttribute("name");
-            nodeTimecodeAttribute_Name.Value = TcName;
+            nodeTimecodeAttribute_Name.Value = GetTcName();
 
             XmlAttribute nodeTimecodeAttribute_FramRate = xmlDoc.CreateAttribute("frame_format");
-            nodeTimecodeAttribute_FramRate.Value = FrameRate.ToString() + " FPS";
+            nodeTimecodeAttribute_FramRate.Value = GetFrameRate().ToString() + " FPS";
 
             nodeTimecode.Attributes.Append(nodeTimecodeAttribute_Index);
             nodeTimecode.Attributes.Append(nodeTimecodeAttribute_Name);
@@ -84,6 +102,31 @@ namespace ExportReaperMarkersToGrandMA2
             nodeTrack.Attributes.Append(nodeTrackAttribute_Index);
             nodeTimecode.AppendChild(nodeTrack);
 
+            XmlNode nodeTrackObject = xmlDoc.CreateElement("Object");
+            XmlAttribute nodeTrackObjectAttribute_Name = xmlDoc.CreateAttribute("name");
+            nodeTrackObjectAttribute_Name.Value = GetSeqName();
+
+            nodeTrackObject.Attributes.Append(nodeTrackObjectAttribute_Name);
+            nodeTrack.AppendChild(nodeTrackObject);
+
+
+            XmlNode nodeNo30 = xmlDoc.CreateElement("No");
+            nodeNo30.InnerText = "30";
+            XmlNode nodeNoConsole = xmlDoc.CreateElement("No");
+            nodeNoConsole.InnerText = "1";
+
+            XmlNode nodeNoPage = xmlDoc.CreateElement("No");
+            nodeNoPage.InnerText = GetPage().ToString();
+            XmlNode nodeNoExec = xmlDoc.CreateElement("No");
+            nodeNoExec.InnerText = GetExec().ToString();
+
+
+            nodeTrackObject.AppendChild(nodeNo30);
+            nodeTrackObject.AppendChild(nodeNoConsole);
+            nodeTrackObject.AppendChild(nodeNoPage);
+            nodeTrackObject.AppendChild(nodeNoExec);
+
+
             XmlNode nodeSubTrack = xmlDoc.CreateElement("SubTrack");
             XmlAttribute nodeSubTrackAttribute_Index = xmlDoc.CreateAttribute("index");
             nodeSubTrackAttribute_Index.Value = "0";
@@ -96,9 +139,85 @@ namespace ExportReaperMarkersToGrandMA2
                 t.writeXML(nodeSubTrack, xmlDoc);
             }
 
-            xmlDoc.Save(path + "\\" + TcName+".xml");
+            xmlDoc.Save(path + "\\" + GetTcName() + ".xml");
 
         }
+        
+        public int GetPage()
+        {
+            return Page;
+        }
+
+        public void SetPage(int value)
+        {
+            this.Page = value;
+        }
+
+        public int GetExec()
+        {
+            return Exec;
+        }
+
+        public void SetExec(int value)
+        {
+            this.Exec = value;
+        }
+
+        public int GetSeq()
+        {
+            return Seq;
+        }
+
+        public void SetSeq(int value)
+        {
+            Seq = value;
+            foreach(TimecodeEvent t in timecodeEvents)
+            {
+                t.Seq = value;
+            }
+        }
+
+        public string GetSeqName()
+        {
+            return SeqName;
+        }
+
+        public void SetSeqName(string value)
+        {
+            SeqName = value;
+        }
+
+        public int GetTc()
+        {
+            return Tc;
+        }
+
+        public void SetTc(int value)
+        {
+            Tc = value;
+        }
+
+        public string GetTcName()
+        {
+            return TcName;
+        }
+
+        public void SetTcName(string value)
+        {
+            TcName = value;
+        }
+
+        public int GetFrameRate()
+        {
+            return FrameRate;
+        }
+
+        public void SetFrameRate(int value)
+        {
+            FrameRate = value;
+        }
+
+
     }
 }
 

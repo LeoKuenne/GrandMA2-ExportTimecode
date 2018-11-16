@@ -43,9 +43,9 @@ namespace ExportReaperMarkersToGrandMA2
                     csv.Add(temp);
                     temp = sr.ReadLine();
                 }
-
-                timecode = new Timecode((int)num_SeqPage.Value, (int)num_SeqItem.Value, txt_SeqName.Text, (int)num_TcItem.Value, txt_TcName.Text, (int)num_TcFrameRate.Value);
-                timecode.parseCSV(csv.ToArray());
+                
+                timecode = new Timecode((int) num_ExecPage.Value, (int) num_ExecItem.Value, (int) num_SeqItem.Value, txt_SeqName.Text, (int) num_TcItem.Value, txt_TcName.Text, (int) num_TcFrameRate.Value);
+                timecode.ParseCSV(csv.ToArray());
 
                 gB_Save.Visible = true;
                 gB_Timecode.Visible = true;
@@ -63,6 +63,41 @@ namespace ExportReaperMarkersToGrandMA2
                 timecode.writeXML(folderBrowserDialog.SelectedPath);
             }
 
+        }
+
+        private void num_SeqItem_ValueChanged(object sender, EventArgs e)
+        {
+            timecode.SetSeq((int) num_SeqItem.Value);
+        }
+
+        private void txt_SeqName_TextChanged(object sender, EventArgs e)
+        {
+            timecode.SetSeqName(txt_SeqName.Text);
+        }
+
+        private void num_ExecPage_ValueChanged(object sender, EventArgs e)
+        {
+            timecode.SetPage((int) num_ExecPage.Value);
+        }
+
+        private void num_ExecItem_ValueChanged(object sender, EventArgs e)
+        {
+            timecode.SetExec((int) num_ExecItem.Value);
+        }
+
+        private void num_TcItem_ValueChanged(object sender, EventArgs e)
+        {
+            timecode.SetTc((int) num_TcItem.Value);
+        }
+
+        private void num_TcFrameRate_ValueChanged(object sender, EventArgs e)
+        {
+            timecode.SetFrameRate((int) num_TcFrameRate.Value);
+        }
+
+        private void txt_TcName_TextChanged(object sender, EventArgs e)
+        {
+            timecode.SetTcName(txt_TcName.Text);
         }
     }
 }
