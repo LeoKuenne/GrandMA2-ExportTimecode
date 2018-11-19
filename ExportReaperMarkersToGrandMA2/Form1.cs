@@ -73,8 +73,21 @@ namespace ExportReaperMarkersToGrandMA2
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 txt_Save.Text = folderBrowserDialog.SelectedPath;
+
+                if (!Directory.Exists(folderBrowserDialog.SelectedPath + "\\importexport"))
+                {
+                    Directory.CreateDirectory(folderBrowserDialog.SelectedPath + "\\importexport");
+                }
+                if (!Directory.Exists(folderBrowserDialog.SelectedPath + "\\macros"))
+                {
+                    Directory.CreateDirectory(folderBrowserDialog.SelectedPath + "\\macros");
+                }
+
+
                 timecode.save(folderBrowserDialog.SelectedPath + "\\importexport");
                 saveMacro(folderBrowserDialog.SelectedPath + "\\macros");
+
+                MessageBox.Show("Datei gespeichert!", "Speichern", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
         }
