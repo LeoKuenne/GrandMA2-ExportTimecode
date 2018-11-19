@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,26 +27,36 @@ namespace ExportReaperMarkersToGrandMA2
 
         public static TimecodeEvent ParseCSV(int index, string values, string[] names, int page, int seq, int fps)
         {
+            
             string[] Values = values.Split(',');
             int PosName = Array.IndexOf(names, "Name");
             int PosTime = Array.IndexOf(names, "Start");
             int PosCount = Array.IndexOf(names, "#");
-
+            
             //HH:MM:SS:FF
             string[] Times = Values[PosTime].Split(':');
             int Frames = int.Parse(Times[3]);
-            int Seconds = int.Parse(Times[2]) * 30;
-            int Minutes = int.Parse(Times[1]) * 30 * 60;
-            int Hours = int.Parse(Times[0]) * 30 * 60 * 60;
+            int Seconds = int.Parse(Times[2]) * fps;
+            int Minutes = int.Parse(Times[1]) * fps * 60;
+            int Hours = int.Parse(Times[0]) * fps * 60 * 60;
             int Time = Frames + Seconds + Minutes + Hours;
-
-
+            
             return new TimecodeEvent(index, seq, int.Parse(Values[PosCount].Substring(1)), Time, Values[PosName]);
         }
 
         public override String ToString()
         {
             return Name + ";" + Time + ";" + Cue;
+        }
+
+        private int DateTimeToFrames(DateTime time)
+        {
+            throw new NotImplementedException();
+        }
+
+        private DateTime FramesToDateTime(int time)
+        {
+            throw new NotImplementedException();
         }
 
         public void writeXML(XmlNode nodeparent, XmlDocument doc)

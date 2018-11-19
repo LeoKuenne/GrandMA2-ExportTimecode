@@ -29,11 +29,17 @@
         private void InitializeComponent()
         {
             this.gB_Open = new System.Windows.Forms.GroupBox();
-            this.btn_Open = new System.Windows.Forms.Button();
+            this.tableLayoutPanel_Open = new System.Windows.Forms.TableLayoutPanel();
             this.txt_Open = new System.Windows.Forms.TextBox();
+            this.btn_Open = new System.Windows.Forms.Button();
             this.gB_Timecode = new System.Windows.Forms.GroupBox();
-            this.gB_Exec = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel_Timecode = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.gB_Exec = new System.Windows.Forms.GroupBox();
+            this.num_ExecItem = new System.Windows.Forms.NumericUpDown();
+            this.lbl_ExecItem = new System.Windows.Forms.Label();
+            this.lbl_ExecPage = new System.Windows.Forms.Label();
+            this.num_ExecPage = new System.Windows.Forms.NumericUpDown();
             this.gB_TimecodeItem = new System.Windows.Forms.GroupBox();
             this.num_TcFrameRate = new System.Windows.Forms.NumericUpDown();
             this.lbl_TcFrameRate = new System.Windows.Forms.Label();
@@ -47,102 +53,209 @@
             this.num_SeqItem = new System.Windows.Forms.NumericUpDown();
             this.lbl_SeqItem = new System.Windows.Forms.Label();
             this.gB_Save = new System.Windows.Forms.GroupBox();
-            this.btn_Save = new System.Windows.Forms.Button();
+            this.tableLayoutPanel_Save = new System.Windows.Forms.TableLayoutPanel();
             this.txt_Save = new System.Windows.Forms.TextBox();
-            this.num_ExecItem = new System.Windows.Forms.NumericUpDown();
-            this.lbl_ExecItem = new System.Windows.Forms.Label();
-            this.lbl_ExecPage = new System.Windows.Forms.Label();
-            this.num_ExecPage = new System.Windows.Forms.NumericUpDown();
+            this.btn_Save = new System.Windows.Forms.Button();
+            this.tableLayoutPanel_Main = new System.Windows.Forms.TableLayoutPanel();
             this.gB_Open.SuspendLayout();
+            this.tableLayoutPanel_Open.SuspendLayout();
             this.gB_Timecode.SuspendLayout();
-            this.gB_Exec.SuspendLayout();
+            this.tableLayoutPanel_Timecode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.gB_Exec.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_ExecItem)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_ExecPage)).BeginInit();
             this.gB_TimecodeItem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_TcFrameRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_TcItem)).BeginInit();
             this.gB_Seq.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_SeqItem)).BeginInit();
             this.gB_Save.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_ExecItem)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.num_ExecPage)).BeginInit();
+            this.tableLayoutPanel_Save.SuspendLayout();
+            this.tableLayoutPanel_Main.SuspendLayout();
             this.SuspendLayout();
             // 
             // gB_Open
             // 
-            this.gB_Open.Controls.Add(this.btn_Open);
-            this.gB_Open.Controls.Add(this.txt_Open);
-            this.gB_Open.Location = new System.Drawing.Point(12, 12);
+            this.gB_Open.AutoSize = true;
+            this.gB_Open.Controls.Add(this.tableLayoutPanel_Open);
+            this.gB_Open.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gB_Open.Location = new System.Drawing.Point(3, 3);
             this.gB_Open.Name = "gB_Open";
-            this.gB_Open.Size = new System.Drawing.Size(614, 48);
+            this.gB_Open.Size = new System.Drawing.Size(573, 44);
             this.gB_Open.TabIndex = 0;
             this.gB_Open.TabStop = false;
             this.gB_Open.Text = "Reaper Marker File auswählen";
             // 
+            // tableLayoutPanel_Open
+            // 
+            this.tableLayoutPanel_Open.AutoSize = true;
+            this.tableLayoutPanel_Open.ColumnCount = 2;
+            this.tableLayoutPanel_Open.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel_Open.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel_Open.Controls.Add(this.txt_Open, 0, 0);
+            this.tableLayoutPanel_Open.Controls.Add(this.btn_Open, 1, 0);
+            this.tableLayoutPanel_Open.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel_Open.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel_Open.Name = "tableLayoutPanel_Open";
+            this.tableLayoutPanel_Open.RowCount = 1;
+            this.tableLayoutPanel_Open.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel_Open.Size = new System.Drawing.Size(567, 25);
+            this.tableLayoutPanel_Open.TabIndex = 4;
+            // 
+            // txt_Open
+            // 
+            this.txt_Open.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txt_Open.Location = new System.Drawing.Point(0, 2);
+            this.txt_Open.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.txt_Open.Name = "txt_Open";
+            this.txt_Open.Size = new System.Drawing.Size(492, 20);
+            this.txt_Open.TabIndex = 0;
+            // 
             // btn_Open
             // 
-            this.btn_Open.Location = new System.Drawing.Point(533, 16);
+            this.btn_Open.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_Open.Location = new System.Drawing.Point(492, 0);
+            this.btn_Open.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Open.Name = "btn_Open";
-            this.btn_Open.Size = new System.Drawing.Size(75, 23);
+            this.btn_Open.Size = new System.Drawing.Size(75, 25);
             this.btn_Open.TabIndex = 1;
             this.btn_Open.Text = "Öffnen";
             this.btn_Open.UseVisualStyleBackColor = true;
             this.btn_Open.Click += new System.EventHandler(this.btn_Open_Click);
             // 
-            // txt_Open
-            // 
-            this.txt_Open.Location = new System.Drawing.Point(6, 19);
-            this.txt_Open.Name = "txt_Open";
-            this.txt_Open.Size = new System.Drawing.Size(521, 20);
-            this.txt_Open.TabIndex = 0;
-            // 
             // gB_Timecode
             // 
-            this.gB_Timecode.Controls.Add(this.gB_Exec);
-            this.gB_Timecode.Controls.Add(this.dataGridView1);
-            this.gB_Timecode.Controls.Add(this.gB_TimecodeItem);
-            this.gB_Timecode.Controls.Add(this.gB_Seq);
-            this.gB_Timecode.Location = new System.Drawing.Point(12, 66);
+            this.gB_Timecode.Controls.Add(this.tableLayoutPanel_Timecode);
+            this.gB_Timecode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gB_Timecode.Location = new System.Drawing.Point(3, 53);
             this.gB_Timecode.Name = "gB_Timecode";
-            this.gB_Timecode.Size = new System.Drawing.Size(614, 235);
+            this.gB_Timecode.Size = new System.Drawing.Size(573, 247);
             this.gB_Timecode.TabIndex = 1;
             this.gB_Timecode.TabStop = false;
             this.gB_Timecode.Text = "Timecode Pool Item konfigurieren";
             this.gB_Timecode.Visible = false;
             // 
-            // gB_Exec
+            // tableLayoutPanel_Timecode
             // 
-            this.gB_Exec.Controls.Add(this.num_ExecItem);
-            this.gB_Exec.Controls.Add(this.lbl_ExecItem);
-            this.gB_Exec.Controls.Add(this.lbl_ExecPage);
-            this.gB_Exec.Controls.Add(this.num_ExecPage);
-            this.gB_Exec.Location = new System.Drawing.Point(276, 88);
-            this.gB_Exec.Name = "gB_Exec";
-            this.gB_Exec.Size = new System.Drawing.Size(332, 69);
-            this.gB_Exec.TabIndex = 9;
-            this.gB_Exec.TabStop = false;
-            this.gB_Exec.Text = "Wähle den Executor der Timecode Spur";
+            this.tableLayoutPanel_Timecode.ColumnCount = 2;
+            this.tableLayoutPanel_Timecode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel_Timecode.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel_Timecode.Controls.Add(this.gB_Exec, 1, 1);
+            this.tableLayoutPanel_Timecode.Controls.Add(this.dataGridView1, 0, 0);
+            this.tableLayoutPanel_Timecode.Controls.Add(this.gB_TimecodeItem, 1, 2);
+            this.tableLayoutPanel_Timecode.Controls.Add(this.gB_Seq, 1, 0);
+            this.tableLayoutPanel_Timecode.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel_Timecode.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel_Timecode.Name = "tableLayoutPanel_Timecode";
+            this.tableLayoutPanel_Timecode.RowCount = 3;
+            this.tableLayoutPanel_Timecode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel_Timecode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel_Timecode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel_Timecode.Size = new System.Drawing.Size(567, 228);
+            this.tableLayoutPanel_Timecode.TabIndex = 0;
             // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 19);
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(264, 210);
+            this.dataGridView1.RowHeadersVisible = false;
+            this.tableLayoutPanel_Timecode.SetRowSpan(this.dataGridView1, 3);
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(223, 222);
             this.dataGridView1.TabIndex = 8;
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
+            // 
+            // gB_Exec
+            // 
+            this.gB_Exec.AutoSize = true;
+            this.gB_Exec.Controls.Add(this.num_ExecItem);
+            this.gB_Exec.Controls.Add(this.lbl_ExecItem);
+            this.gB_Exec.Controls.Add(this.lbl_ExecPage);
+            this.gB_Exec.Controls.Add(this.num_ExecPage);
+            this.gB_Exec.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gB_Exec.Location = new System.Drawing.Point(232, 79);
+            this.gB_Exec.Name = "gB_Exec";
+            this.gB_Exec.Size = new System.Drawing.Size(332, 70);
+            this.gB_Exec.TabIndex = 9;
+            this.gB_Exec.TabStop = false;
+            this.gB_Exec.Text = "Wähle den Executor der Timecode Spur";
+            // 
+            // num_ExecItem
+            // 
+            this.num_ExecItem.Location = new System.Drawing.Point(166, 15);
+            this.num_ExecItem.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_ExecItem.Name = "num_ExecItem";
+            this.num_ExecItem.Size = new System.Drawing.Size(50, 20);
+            this.num_ExecItem.TabIndex = 17;
+            this.num_ExecItem.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_ExecItem.ValueChanged += new System.EventHandler(this.num_ExecItem_ValueChanged);
+            // 
+            // lbl_ExecItem
+            // 
+            this.lbl_ExecItem.AutoSize = true;
+            this.lbl_ExecItem.Location = new System.Drawing.Point(106, 17);
+            this.lbl_ExecItem.Name = "lbl_ExecItem";
+            this.lbl_ExecItem.Size = new System.Drawing.Size(52, 13);
+            this.lbl_ExecItem.TabIndex = 16;
+            this.lbl_ExecItem.Text = "Executor:";
+            // 
+            // lbl_ExecPage
+            // 
+            this.lbl_ExecPage.AutoSize = true;
+            this.lbl_ExecPage.Location = new System.Drawing.Point(9, 17);
+            this.lbl_ExecPage.Name = "lbl_ExecPage";
+            this.lbl_ExecPage.Size = new System.Drawing.Size(35, 13);
+            this.lbl_ExecPage.TabIndex = 15;
+            this.lbl_ExecPage.Text = "Page:";
+            // 
+            // num_ExecPage
+            // 
+            this.num_ExecPage.Location = new System.Drawing.Point(50, 15);
+            this.num_ExecPage.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_ExecPage.Name = "num_ExecPage";
+            this.num_ExecPage.Size = new System.Drawing.Size(50, 20);
+            this.num_ExecPage.TabIndex = 14;
+            this.num_ExecPage.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_ExecPage.ValueChanged += new System.EventHandler(this.num_ExecPage_ValueChanged);
             // 
             // gB_TimecodeItem
             // 
+            this.gB_TimecodeItem.AutoSize = true;
             this.gB_TimecodeItem.Controls.Add(this.num_TcFrameRate);
             this.gB_TimecodeItem.Controls.Add(this.lbl_TcFrameRate);
             this.gB_TimecodeItem.Controls.Add(this.txt_TcName);
             this.gB_TimecodeItem.Controls.Add(this.lbl_TcName);
             this.gB_TimecodeItem.Controls.Add(this.num_TcItem);
             this.gB_TimecodeItem.Controls.Add(this.lbl_TcItem);
-            this.gB_TimecodeItem.Location = new System.Drawing.Point(276, 160);
+            this.gB_TimecodeItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gB_TimecodeItem.Location = new System.Drawing.Point(232, 155);
             this.gB_TimecodeItem.Name = "gB_TimecodeItem";
-            this.gB_TimecodeItem.Size = new System.Drawing.Size(332, 69);
+            this.gB_TimecodeItem.Size = new System.Drawing.Size(332, 70);
             this.gB_TimecodeItem.TabIndex = 7;
             this.gB_TimecodeItem.TabStop = false;
             this.gB_TimecodeItem.Text = "Wähle das Timecode Pool Item:";
@@ -231,13 +344,15 @@
             // 
             // gB_Seq
             // 
+            this.gB_Seq.AutoSize = true;
             this.gB_Seq.Controls.Add(this.txt_SeqName);
             this.gB_Seq.Controls.Add(this.lbl_SeqName);
             this.gB_Seq.Controls.Add(this.num_SeqItem);
             this.gB_Seq.Controls.Add(this.lbl_SeqItem);
-            this.gB_Seq.Location = new System.Drawing.Point(276, 19);
+            this.gB_Seq.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gB_Seq.Location = new System.Drawing.Point(232, 3);
             this.gB_Seq.Name = "gB_Seq";
-            this.gB_Seq.Size = new System.Drawing.Size(332, 68);
+            this.gB_Seq.Size = new System.Drawing.Size(332, 70);
             this.gB_Seq.TabIndex = 6;
             this.gB_Seq.TabStop = false;
             this.gB_Seq.Text = "Wähle die Sequenz der Timecode Spur:";
@@ -289,103 +404,94 @@
             // 
             // gB_Save
             // 
-            this.gB_Save.Controls.Add(this.btn_Save);
-            this.gB_Save.Controls.Add(this.txt_Save);
-            this.gB_Save.Location = new System.Drawing.Point(12, 307);
+            this.gB_Save.AutoSize = true;
+            this.gB_Save.Controls.Add(this.tableLayoutPanel_Save);
+            this.gB_Save.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gB_Save.Location = new System.Drawing.Point(3, 306);
             this.gB_Save.Name = "gB_Save";
-            this.gB_Save.Size = new System.Drawing.Size(614, 48);
+            this.gB_Save.Size = new System.Drawing.Size(573, 44);
             this.gB_Save.TabIndex = 2;
             this.gB_Save.TabStop = false;
             this.gB_Save.Text = "GrandMA2 Ordner auswählen";
             this.gB_Save.Visible = false;
             // 
+            // tableLayoutPanel_Save
+            // 
+            this.tableLayoutPanel_Save.AutoSize = true;
+            this.tableLayoutPanel_Save.ColumnCount = 2;
+            this.tableLayoutPanel_Save.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel_Save.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel_Save.Controls.Add(this.txt_Save, 0, 0);
+            this.tableLayoutPanel_Save.Controls.Add(this.btn_Save, 1, 0);
+            this.tableLayoutPanel_Save.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel_Save.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel_Save.Name = "tableLayoutPanel_Save";
+            this.tableLayoutPanel_Save.RowCount = 1;
+            this.tableLayoutPanel_Save.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel_Save.Size = new System.Drawing.Size(567, 25);
+            this.tableLayoutPanel_Save.TabIndex = 5;
+            // 
+            // txt_Save
+            // 
+            this.txt_Save.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txt_Save.Location = new System.Drawing.Point(0, 2);
+            this.txt_Save.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.txt_Save.Name = "txt_Save";
+            this.txt_Save.Size = new System.Drawing.Size(492, 20);
+            this.txt_Save.TabIndex = 0;
+            // 
             // btn_Save
             // 
-            this.btn_Save.Location = new System.Drawing.Point(533, 16);
+            this.btn_Save.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_Save.Location = new System.Drawing.Point(492, 0);
+            this.btn_Save.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Save.Name = "btn_Save";
-            this.btn_Save.Size = new System.Drawing.Size(75, 23);
+            this.btn_Save.Size = new System.Drawing.Size(75, 25);
             this.btn_Save.TabIndex = 1;
             this.btn_Save.Text = "Speichern";
             this.btn_Save.UseVisualStyleBackColor = true;
             this.btn_Save.Click += new System.EventHandler(this.btn_Save_Click);
             // 
-            // txt_Save
+            // tableLayoutPanel_Main
             // 
-            this.txt_Save.Location = new System.Drawing.Point(6, 19);
-            this.txt_Save.Name = "txt_Save";
-            this.txt_Save.Size = new System.Drawing.Size(521, 20);
-            this.txt_Save.TabIndex = 0;
-            // 
-            // num_ExecItem
-            // 
-            this.num_ExecItem.Location = new System.Drawing.Point(166, 15);
-            this.num_ExecItem.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.num_ExecItem.Name = "num_ExecItem";
-            this.num_ExecItem.Size = new System.Drawing.Size(50, 20);
-            this.num_ExecItem.TabIndex = 17;
-            this.num_ExecItem.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.num_ExecItem.ValueChanged += new System.EventHandler(this.num_ExecItem_ValueChanged);
-            // 
-            // lbl_ExecItem
-            // 
-            this.lbl_ExecItem.AutoSize = true;
-            this.lbl_ExecItem.Location = new System.Drawing.Point(106, 17);
-            this.lbl_ExecItem.Name = "lbl_ExecItem";
-            this.lbl_ExecItem.Size = new System.Drawing.Size(54, 13);
-            this.lbl_ExecItem.TabIndex = 16;
-            this.lbl_ExecItem.Text = "Pool Item:";
-            // 
-            // lbl_ExecPage
-            // 
-            this.lbl_ExecPage.AutoSize = true;
-            this.lbl_ExecPage.Location = new System.Drawing.Point(9, 17);
-            this.lbl_ExecPage.Name = "lbl_ExecPage";
-            this.lbl_ExecPage.Size = new System.Drawing.Size(35, 13);
-            this.lbl_ExecPage.TabIndex = 15;
-            this.lbl_ExecPage.Text = "Page:";
-            // 
-            // num_ExecPage
-            // 
-            this.num_ExecPage.Location = new System.Drawing.Point(50, 15);
-            this.num_ExecPage.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.num_ExecPage.Name = "num_ExecPage";
-            this.num_ExecPage.Size = new System.Drawing.Size(50, 20);
-            this.num_ExecPage.TabIndex = 14;
-            this.num_ExecPage.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.num_ExecPage.ValueChanged += new System.EventHandler(this.num_ExecPage_ValueChanged);
+            this.tableLayoutPanel_Main.AutoSize = true;
+            this.tableLayoutPanel_Main.ColumnCount = 1;
+            this.tableLayoutPanel_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel_Main.Controls.Add(this.gB_Open, 0, 0);
+            this.tableLayoutPanel_Main.Controls.Add(this.gB_Save, 0, 2);
+            this.tableLayoutPanel_Main.Controls.Add(this.gB_Timecode, 0, 1);
+            this.tableLayoutPanel_Main.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel_Main.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel_Main.Name = "tableLayoutPanel_Main";
+            this.tableLayoutPanel_Main.RowCount = 3;
+            this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel_Main.Size = new System.Drawing.Size(579, 353);
+            this.tableLayoutPanel_Main.TabIndex = 3;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(638, 367);
-            this.Controls.Add(this.gB_Save);
-            this.Controls.Add(this.gB_Timecode);
-            this.Controls.Add(this.gB_Open);
+            this.ClientSize = new System.Drawing.Size(579, 353);
+            this.Controls.Add(this.tableLayoutPanel_Main);
+            this.MinimumSize = new System.Drawing.Size(595, 392);
             this.Name = "Form1";
             this.Text = "Exporterie Reaper Marker nach GrandMA2";
             this.gB_Open.ResumeLayout(false);
             this.gB_Open.PerformLayout();
+            this.tableLayoutPanel_Open.ResumeLayout(false);
+            this.tableLayoutPanel_Open.PerformLayout();
             this.gB_Timecode.ResumeLayout(false);
+            this.tableLayoutPanel_Timecode.ResumeLayout(false);
+            this.tableLayoutPanel_Timecode.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.gB_Exec.ResumeLayout(false);
             this.gB_Exec.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_ExecItem)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_ExecPage)).EndInit();
             this.gB_TimecodeItem.ResumeLayout(false);
             this.gB_TimecodeItem.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_TcFrameRate)).EndInit();
@@ -395,9 +501,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_SeqItem)).EndInit();
             this.gB_Save.ResumeLayout(false);
             this.gB_Save.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_ExecItem)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.num_ExecPage)).EndInit();
+            this.tableLayoutPanel_Save.ResumeLayout(false);
+            this.tableLayoutPanel_Save.PerformLayout();
+            this.tableLayoutPanel_Main.ResumeLayout(false);
+            this.tableLayoutPanel_Main.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -428,6 +537,10 @@
         private System.Windows.Forms.Label lbl_ExecItem;
         private System.Windows.Forms.Label lbl_ExecPage;
         private System.Windows.Forms.NumericUpDown num_ExecPage;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel_Main;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel_Open;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel_Save;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel_Timecode;
     }
 }
 

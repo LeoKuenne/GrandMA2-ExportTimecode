@@ -9,7 +9,7 @@ namespace ExportReaperMarkersToGrandMA2
 {
     class Timecode
     {
-        TimecodeEvent[] timecodeEvents { get; set; }
+        public TimecodeEvent[] timecodeEvents { get; set; }
 
         private int Page;
         private int Exec;
@@ -32,20 +32,27 @@ namespace ExportReaperMarkersToGrandMA2
 
         }
 
-        public void ParseCSV(string[] csvtext)
+        public bool ParseCSV(string[] csvtext)
         {
             string[] names = csvtext[0].Split(',');
 
             timecodeEvents = new TimecodeEvent[csvtext.Length-1];
 
-            for (int i = 0; i < csvtext.Length-1; i++)
+            try
             {
-                timecodeEvents[i] = TimecodeEvent.ParseCSV(i, csvtext[i + 1], names, GetPage(), GetSeq(), GetFrameRate());
+                for (int i = 0; i < csvtext.Length-1; i++)
+                {
+                    timecodeEvents[i] = TimecodeEvent.ParseCSV(i, csvtext[i + 1], names, GetPage(), GetSeq(), GetFrameRate());
+                }
             }
-
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
         }
 
-        public void writeXML(String path)
+        public void save(String path)
         {
             XmlDocument xmlDoc = new XmlDocument();
 
