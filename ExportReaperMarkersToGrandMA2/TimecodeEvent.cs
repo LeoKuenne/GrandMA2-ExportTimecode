@@ -12,11 +12,18 @@ namespace ExportReaperMarkersToGrandMA2
     {
         public string Name { get; set; }
         public int Time { get; set; }
+        public string[] Times { get; set; }
         public int Seq { get; set; }
         public int Cue { get; set; }
         public int Index { get; set; }
+
+        private int fps;
+
         
-        public TimecodeEvent(int index, int seqitem, int cue, int time, string name)
+
+        public TimecodeEvent() { }
+
+        public TimecodeEvent(int index, int seqitem, int cue, int time, string name, int fps)
         {
             this.Name = name;
             this.Time = time;
@@ -40,9 +47,34 @@ namespace ExportReaperMarkersToGrandMA2
             int Minutes = int.Parse(Times[1]) * fps * 60;
             int Hours = int.Parse(Times[0]) * fps * 60 * 60;
             int Time = Frames + Seconds + Minutes + Hours;
+
+            TimecodeEvent e = new TimecodeEvent();
+            e.Time = Time;
+            e.Times = Times;
+            e.Name = Values[PosName];
+            e.Seq = seq;
+            e.Cue = int.Parse(Values[PosCount].Substring(1));
+            e.Index = index;
+            e.SetFps(fps);
             
-            return new TimecodeEvent(index, seq, int.Parse(Values[PosCount].Substring(1)), Time, Values[PosName]);
+            return e;
         }
+
+        public int GetFps()
+        {
+            return fps;
+        }
+
+        public void SetFps(int value)
+        {
+            fps = value;
+            int Frames = int.Parse(Times[3]);
+            int Seconds = int.Parse(Times[2]) * fps;
+            int Minutes = int.Parse(Times[1]) * fps * 60;
+            int Hours = int.Parse(Times[0]) * fps * 60 * 60;
+            Time = Frames + Seconds + Minutes + Hours;
+        }
+
 
         public override String ToString()
         {

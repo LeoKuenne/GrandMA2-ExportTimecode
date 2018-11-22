@@ -34,12 +34,12 @@
             this.btn_Open = new System.Windows.Forms.Button();
             this.gB_Timecode = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel_Timecode = new System.Windows.Forms.TableLayoutPanel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.gB_Exec = new System.Windows.Forms.GroupBox();
             this.num_ExecItem = new System.Windows.Forms.NumericUpDown();
             this.lbl_ExecItem = new System.Windows.Forms.Label();
             this.lbl_ExecPage = new System.Windows.Forms.Label();
             this.num_ExecPage = new System.Windows.Forms.NumericUpDown();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.gB_TimecodeItem = new System.Windows.Forms.GroupBox();
             this.num_TcFrameRate = new System.Windows.Forms.NumericUpDown();
             this.lbl_TcFrameRate = new System.Windows.Forms.Label();
@@ -61,10 +61,10 @@
             this.tableLayoutPanel_Open.SuspendLayout();
             this.gB_Timecode.SuspendLayout();
             this.tableLayoutPanel_Timecode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.gB_Exec.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_ExecItem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_ExecPage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.gB_TimecodeItem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_TcFrameRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_TcItem)).BeginInit();
@@ -155,25 +155,6 @@
             this.tableLayoutPanel_Timecode.Size = new System.Drawing.Size(567, 228);
             this.tableLayoutPanel_Timecode.TabIndex = 0;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.tableLayoutPanel_Timecode.SetRowSpan(this.dataGridView1, 3);
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(223, 222);
-            this.dataGridView1.TabIndex = 8;
-            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
-            // 
             // gB_Exec
             // 
             this.gB_Exec.AutoSize = true;
@@ -242,6 +223,25 @@
             0,
             0});
             this.num_ExecPage.ValueChanged += new System.EventHandler(this.num_ExecPage_ValueChanged);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.tableLayoutPanel_Timecode.SetRowSpan(this.dataGridView1, 3);
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(223, 222);
+            this.dataGridView1.TabIndex = 8;
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
             // 
             // gB_TimecodeItem
             // 
@@ -487,11 +487,11 @@
             this.gB_Timecode.ResumeLayout(false);
             this.tableLayoutPanel_Timecode.ResumeLayout(false);
             this.tableLayoutPanel_Timecode.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.gB_Exec.ResumeLayout(false);
             this.gB_Exec.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_ExecItem)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_ExecPage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.gB_TimecodeItem.ResumeLayout(false);
             this.gB_TimecodeItem.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_TcFrameRate)).EndInit();

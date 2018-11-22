@@ -222,6 +222,7 @@ namespace ExportReaperMarkersToGrandMA2
         public void SetFrameRate(int value)
         {
             FrameRate = value;
+            foreach (TimecodeEvent e in timecodeEvents) e.SetFps(value);
         }
 
 

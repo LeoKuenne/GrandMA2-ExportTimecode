@@ -199,6 +199,7 @@ namespace ExportReaperMarkersToGrandMA2
         private void num_TcFrameRate_ValueChanged(object sender, EventArgs e)
         {
             timecode.SetFrameRate((int) num_TcFrameRate.Value);
+            dataGridView1.DataSource = timecode.timecodeEvents.ToList();
         }
 
         private void txt_TcName_TextChanged(object sender, EventArgs e)
