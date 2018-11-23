@@ -10,7 +10,7 @@ namespace ExportReaperMarkersToGrandMA2
     class Timecode
     {
         public TimecodeEvent[] timecodeEvents { get; set; }
-
+        
         private int Page;
         private int Exec;
         private int Seq;
@@ -18,7 +18,8 @@ namespace ExportReaperMarkersToGrandMA2
         private int Tc;
         private string TcName;
         private int FrameRate;
-        
+        private string defaultTrigger;
+
 
         public Timecode(int page, int exec, int seq, string seqname, int tc, string tcname, int framerate)
         {
@@ -29,6 +30,7 @@ namespace ExportReaperMarkersToGrandMA2
             this.Tc = tc;
             this.TcName = tcname;
             this.FrameRate = framerate;
+            this.defaultTrigger = "Go";
 
         }
 
@@ -225,7 +227,16 @@ namespace ExportReaperMarkersToGrandMA2
             foreach (TimecodeEvent e in timecodeEvents) e.SetFps(value);
         }
 
+        public string GetDefaultTrigger()
+        {
+            return defaultTrigger;
+        }
 
+        public void SetDefaultTrigger(string value)
+        {
+            defaultTrigger = value;
+            foreach (TimecodeEvent e in timecodeEvents) e.Trigger = value;
+        }
     }
 }
 

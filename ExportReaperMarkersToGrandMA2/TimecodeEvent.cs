@@ -16,10 +16,10 @@ namespace ExportReaperMarkersToGrandMA2
         public int Seq { get; set; }
         public int Cue { get; set; }
         public int Index { get; set; }
+        public string Trigger { get; set; }
 
-        private int fps;
+        private int FrameRate;
 
-        
 
         public TimecodeEvent() { }
 
@@ -30,6 +30,7 @@ namespace ExportReaperMarkersToGrandMA2
             this.Seq = seqitem;
             this.Cue = cue;
             this.Index = index;
+            this.Trigger = "Go";
         }
 
         public static TimecodeEvent ParseCSV(int index, string values, string[] names, int page, int seq, int fps)
@@ -62,16 +63,16 @@ namespace ExportReaperMarkersToGrandMA2
 
         public int GetFps()
         {
-            return fps;
+            return FrameRate;
         }
 
         public void SetFps(int value)
         {
-            fps = value;
+            FrameRate = value;
             int Frames = int.Parse(Times[3]);
-            int Seconds = int.Parse(Times[2]) * fps;
-            int Minutes = int.Parse(Times[1]) * fps * 60;
-            int Hours = int.Parse(Times[0]) * fps * 60 * 60;
+            int Seconds = int.Parse(Times[2]) * FrameRate;
+            int Minutes = int.Parse(Times[1]) * FrameRate * 60;
+            int Hours = int.Parse(Times[0]) * FrameRate * 60 * 60;
             Time = Frames + Seconds + Minutes + Hours;
         }
 
@@ -104,7 +105,7 @@ namespace ExportReaperMarkersToGrandMA2
             nodeEvent_Step.Value = (Index+1).ToString();
 
             XmlAttribute nodeEvent_Command = doc.CreateAttribute("command");
-            nodeEvent_Command.Value = "Goto";
+            nodeEvent_Command.Value = Trigger;
 
             XmlAttribute nodeEvent_Pressed = doc.CreateAttribute("pressed");
             nodeEvent_Pressed.Value = "true";
@@ -133,8 +134,6 @@ namespace ExportReaperMarkersToGrandMA2
             nodeCue.AppendChild(nodeNoPage);
             nodeCue.AppendChild(nodeNoSeq);
             nodeCue.AppendChild(nodeNoCue);
-
-
         }
     }
 }

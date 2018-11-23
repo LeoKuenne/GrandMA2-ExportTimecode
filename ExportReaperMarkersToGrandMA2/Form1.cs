@@ -206,6 +206,22 @@ namespace ExportReaperMarkersToGrandMA2
         {
             timecode.SetTcName(txt_TcName.Text);
         }
+        
+        private void cB_TcDefaultTrigger_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cB_TcDefaultTrigger.SelectedIndex)
+            {
+                case 0:
+                    timecode.SetDefaultTrigger("Goto");
+                    dataGridView1.DataSource = timecode.timecodeEvents.ToList();
+                    break;
+                case 1:
+                    timecode.SetDefaultTrigger("Go");
+                    dataGridView1.DataSource = timecode.timecodeEvents.ToList();
+                    break;
+                default:break;
+            }
+        }
         #endregion
 
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
