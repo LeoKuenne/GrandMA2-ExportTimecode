@@ -23,17 +23,17 @@ namespace ExportReaperMarkersToGrandMA2
 
         public TimecodeEvent() { }
 
-        public TimecodeEvent(int index, int seqitem, int cue, int time, string name, int fps)
+        public TimecodeEvent(int index, int seqitem, int cue, int time, string name, int fps, string trigger)
         {
             this.Name = name;
             this.Time = time;
             this.Seq = seqitem;
             this.Cue = cue;
             this.Index = index;
-            this.Trigger = "Go";
+            this.Trigger = trigger;
         }
 
-        public static TimecodeEvent ParseCSV(int index, string values, string[] names, int page, int seq, int fps)
+        public static TimecodeEvent ParseCSV(int index, string values, string[] names, int page, int seq, int fps, string defaulttrigger)
         {
             
             string[] Values = values.Split(',');
@@ -57,6 +57,7 @@ namespace ExportReaperMarkersToGrandMA2
             e.Cue = int.Parse(Values[PosCount].Substring(1));
             e.Index = index;
             e.SetFps(fps);
+            e.Trigger = defaulttrigger;
             
             return e;
         }

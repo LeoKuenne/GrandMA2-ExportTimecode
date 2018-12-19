@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Environment;
 
 namespace ExportReaperMarkersToGrandMA2
 {
@@ -40,7 +41,7 @@ namespace ExportReaperMarkersToGrandMA2
                     temp = sr.ReadLine();
                 }
                 
-                timecode = new Timecode((int) num_ExecPage.Value, (int) num_ExecItem.Value, (int) num_SeqItem.Value, txt_SeqName.Text, (int) num_TcItem.Value, txt_TcName.Text, (int) num_TcFrameRate.Value);
+                timecode = new Timecode((int) num_ExecPage.Value, (int) num_ExecItem.Value, (int) num_SeqItem.Value, txt_SeqName.Text, (int) num_TcItem.Value, txt_TcName.Text, (int) num_TcFrameRate.Value, "Go");
                 if (!timecode.ParseCSV(csv.ToArray()))
                 {
                     MessageBox.Show("Die ausgewählte Datei entspricht nicht dem erwarteten Format!\n" +
@@ -60,7 +61,7 @@ namespace ExportReaperMarkersToGrandMA2
                 dataGridView1.DataSource = timecode.timecodeEvents.ToList();
                 dataGridView1.AllowUserToResizeColumns = true;
                 dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
+                
                 sr.Close();
             }
 
@@ -70,6 +71,7 @@ namespace ExportReaperMarkersToGrandMA2
         private void btn_Save_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            folderBrowserDialog.SelectedPath = txt_Save.Text;
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 txt_Save.Text = folderBrowserDialog.SelectedPath;
@@ -174,6 +176,7 @@ namespace ExportReaperMarkersToGrandMA2
         private void num_SeqItem_ValueChanged(object sender, EventArgs e)
         {
             timecode.SetSeq((int) num_SeqItem.Value);
+            dataGridView1.DataSource = timecode.timecodeEvents.ToList();
         }
 
         private void txt_SeqName_TextChanged(object sender, EventArgs e)

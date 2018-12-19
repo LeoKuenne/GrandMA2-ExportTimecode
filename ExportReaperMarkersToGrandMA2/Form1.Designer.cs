@@ -267,6 +267,9 @@
             // cB_TcDefaultTrigger
             // 
             this.cB_TcDefaultTrigger.FormattingEnabled = true;
+            this.cB_TcDefaultTrigger.Items.AddRange(new object[] {
+            "Goto",
+            "Go"});
             this.cB_TcDefaultTrigger.Location = new System.Drawing.Point(338, 13);
             this.cB_TcDefaultTrigger.Name = "cB_TcDefaultTrigger";
             this.cB_TcDefaultTrigger.Size = new System.Drawing.Size(70, 21);

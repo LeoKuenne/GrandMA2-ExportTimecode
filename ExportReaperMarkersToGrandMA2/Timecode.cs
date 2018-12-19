@@ -21,7 +21,7 @@ namespace ExportReaperMarkersToGrandMA2
         private string defaultTrigger;
 
 
-        public Timecode(int page, int exec, int seq, string seqname, int tc, string tcname, int framerate)
+        public Timecode(int page, int exec, int seq, string seqname, int tc, string tcname, int framerate, string defaultTrigger)
         {
             this.Page = page;
             this.Exec = exec;
@@ -30,8 +30,7 @@ namespace ExportReaperMarkersToGrandMA2
             this.Tc = tc;
             this.TcName = tcname;
             this.FrameRate = framerate;
-            this.defaultTrigger = "Go";
-
+            this.defaultTrigger = defaultTrigger;
         }
 
         public bool ParseCSV(string[] csvtext)
@@ -44,7 +43,7 @@ namespace ExportReaperMarkersToGrandMA2
             {
                 for (int i = 0; i < csvtext.Length-1; i++)
                 {
-                    timecodeEvents[i] = TimecodeEvent.ParseCSV(i, csvtext[i + 1], names, GetPage(), GetSeq(), GetFrameRate());
+                    timecodeEvents[i] = TimecodeEvent.ParseCSV(i, csvtext[i + 1], names, GetPage(), GetSeq(), GetFrameRate(), defaultTrigger);
                 }
             }
             catch (Exception ex)
