@@ -8,9 +8,8 @@ namespace ExportReaperMarkersToGrandMA2
 {
     static class Program
     {
-        /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
-        /// </summary>
+        public static string version = "1.2";
+
         [STAThread]
         static void Main()
         {

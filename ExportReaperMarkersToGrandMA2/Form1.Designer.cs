@@ -505,7 +505,7 @@
             this.Controls.Add(this.tableLayoutPanel_Main);
             this.MinimumSize = new System.Drawing.Size(595, 392);
             this.Name = "Form1";
-            this.Text = "Exporterie Reaper Marker nach GrandMA2";
+            this.Text = "Exporterie Reaper Marker nach GrandMA2 | Version: 1.2";
             this.gB_Open.ResumeLayout(false);
             this.gB_Open.PerformLayout();
             this.tableLayoutPanel_Open.ResumeLayout(false);
