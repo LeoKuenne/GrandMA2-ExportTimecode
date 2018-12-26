@@ -1,6 +1,6 @@
 # GrandMA2-ExportTimecode
 
-![GrandMA2-ExportTimecode](ExportReaperMarkersToGrandMA2/img/ReadMe.png)
+![GrandMA2-ExportTimecode](ExportReaperMarkersToGrandMA2/img/ReadMe.PNG)
 
 
 ## Was ist das?
