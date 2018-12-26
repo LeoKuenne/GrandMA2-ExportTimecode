@@ -1,0 +1,27 @@
+<html>
+<body>
+<p><h1>Anleitung:</h1><br>Folgende Dinge müssen beachtet werden: </p>
+<p>1. Reaper-Datei auswählen:
+- Es muss eine von Reaper erstellte Datei ausgewählt werden
+- Die Timeline muss auf dem Format:
+	'Hours:Minutes:Seconds:Frames'
+   stehen (Rechtsklick auf die Timeline)
+
+2. Namensgebung der Pool-Items:
+- Möglichst keine Lehrzeichen verwenden
+
+3. Speichern der Macro-Datei und der Timecode-Datei:
+- GrandMA2 Ordner auswählen, keine Unterordner z.B.:
+	X:/gma2/
+	    oder
+	C:/ProgramData/MA Lighting Technologies/grandma/gma2_V_3.5
+- Wird kein externes Speichermedium ausgewählt, so muss im Macro
+  die 3. letze Zeile "SelectDrive 4" zu "SelectDrive 1" geändert werden
+- Ist an der Konsole/Session mehr als ein USB-Stick angeschlossen, so muss im Macro
+  die 3. letze Zeile "SelectDrive 4" zu "SelectDrive X" geändert werden
+  Dabei ist X die Anzahl an USB-Sticks plus drei, oder die Tab-Position des USB-Sticks im Backup-Menü!
+
+
+
+</body>
+</html>

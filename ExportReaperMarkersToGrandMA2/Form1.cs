@@ -243,5 +243,11 @@ namespace ExportReaperMarkersToGrandMA2
                 dataGridView1.EndEdit();
             }
         }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            HelpDialog help = new HelpDialog();
+            help.Show();
+        }
     }
 }
