@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +16,7 @@ namespace ExportReaperMarkersToGrandMA2
         [STAThread]
         static void Main()
         {
+            /*
             try
             {
                 Application.EnableVisualStyles();
@@ -21,8 +25,8 @@ namespace ExportReaperMarkersToGrandMA2
             }catch(Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-            }
-
+            }*/
+            
         }
     }
 }

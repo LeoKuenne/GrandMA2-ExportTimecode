@@ -249,5 +249,10 @@ namespace ExportReaperMarkersToGrandMA2
             HelpDialog help = new HelpDialog();
             help.Show();
         }
+
+        private void einstellungenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
