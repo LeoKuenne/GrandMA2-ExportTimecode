@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F4D0965C-1989-4A54-AA0A-B9DF8EF84FA2}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>ExportReaperMarkersToGrandMA2</RootNamespace>
     <AssemblyName>ExportReaperMarkersToGrandMA2</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
     <Compile Include="MA2CommandNotExecutedException.cs" />
     <Compile Include="Telnet.cs" />
     <Compile Include="Form1.cs">
@@ -71,6 +70,13 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TelnetConnectionException.cs" />
+    <Compile Include="NetworkTransmitDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NetworkTransmitDialog.Designer.cs">
+      <DependentUpon>NetworkTransmitDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Timecode.cs" />
     <Compile Include="TimecodeEvent.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -91,6 +97,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="NetworkTransmitDialog.resx">
+      <DependentUpon>NetworkTransmitDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

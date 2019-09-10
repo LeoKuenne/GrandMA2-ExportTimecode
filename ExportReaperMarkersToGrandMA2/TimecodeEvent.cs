@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace ExportReaperMarkersToGrandMA2
 {
-    class TimecodeEvent
+    public class TimecodeEvent
     {
         public string Name { get; set; }
         public int Time { get; set; }

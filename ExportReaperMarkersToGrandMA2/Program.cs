@@ -11,12 +11,11 @@ namespace ExportReaperMarkersToGrandMA2
 {
     static class Program
     {
-        public static string version = "1.2";
+        public static string version = "1.3";
 
         [STAThread]
         static void Main()
         {
-            /*
             try
             {
                 Application.EnableVisualStyles();
@@ -25,8 +24,7 @@ namespace ExportReaperMarkersToGrandMA2
             }catch(Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-            }*/
-            
+            }
         }
     }
 }
