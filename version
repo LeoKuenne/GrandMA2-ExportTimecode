@@ -1,1 +1,8 @@
+Version:
 1.4
+
+Changelog - Version 1.4:
+* Added UpdateDialog
+
+Changelog - Version 1.3:
+* Added Network connectivity: The Sequence can now be created via network. It is not linked to the timecode item yet. Timecode-Item is still imported via USB-Stick!
