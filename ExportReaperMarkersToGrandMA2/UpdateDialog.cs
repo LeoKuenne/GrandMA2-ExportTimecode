@@ -23,24 +23,28 @@ namespace ExportReaperMarkersToGrandMA2
 
         private void UpdateDialog_Load(object sender, EventArgs e)
         {
-            string response = "";
+            string[] response;
+            string Changelog = "";
             using (WebClient webClient = new WebClient())
             {
-                response = webClient.DownloadString("https://raw.githubusercontent.com/Hawk141198/GrandMA2-ExportTimecode/master/version");
+                response = webClient.DownloadString("https://raw.githubusercontent.com/Hawk141198/GrandMA2-ExportTimecode/master/version").Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             }
 
-            response = response.Replace("\n", "");
+            for (int i = 2; i < response.Length; i++)
+            {
+                Changelog += response[i] + "\n";
+            }
 
-            if (float.Parse(response) > float.Parse(Program.version))
+            if (float.Parse(response[1]) > float.Parse(Program.version))
             {
                 lblInfo.Text = "Sie benutzten eine alte Version! Es ist bereits eine aktuellere Version verfügbar!" +
                     "\n" +
                     "Ihre Version: " + Program.version +"\n" +
                     "Neue Version: " + response + "\n" +
-                    "Wollen Sie die neue Version herunterladen?";
+                    "Wollen Sie die neue Version herunterladen?" + Changelog;
                 button1.Enabled = true;
             }
-            else if(float.Parse(response) == float.Parse(Program.version))
+            else if(float.Parse(response[1]) == float.Parse(Program.version))
             {
                 lblInfo.Text = "Sie benutzen die aktuellste Verison!";
             }
