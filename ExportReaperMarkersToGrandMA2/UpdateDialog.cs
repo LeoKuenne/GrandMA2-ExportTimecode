@@ -50,11 +50,11 @@ namespace ExportReaperMarkersToGrandMA2
         {
             WebClient d = new WebClient();
             d.DownloadProgressChanged += DownloadProgressChanged;
-            d.DownloadStringCompleted += DownloadStringCompleted;
-            d.DownloadFileAsync(new Uri("https://raw.githubusercontent.com/Hawk141198/GrandMA2-ExportTimecode/master/GrandMA2ExportTimecode.exe"), "GrandMA2-ExportTimecode");
+            d.DownloadFileCompleted += DownloadFileCompleted;
+            d.DownloadFileAsync(new Uri("https://github.com/Hawk141198/GrandMA2-ExportTimecode/raw/master/GrandMA2-ExportTimecode.exe"), "GrandMA2-ExportTimecode.exe");
         }
 
-        private void DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             lbl_DownloadInfo.Text = "Download abgeschlossen!";
         }

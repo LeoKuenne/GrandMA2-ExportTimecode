@@ -20,6 +20,8 @@ namespace ExportReaperMarkersToGrandMA2
         public Form1()
         {
             InitializeComponent();
+
+            this.Text = "GrandMA2-ExportTimecode | Version:" + Program.version;
         }
 
         private void btn_Open_Click(object sender, EventArgs e)
