@@ -21,13 +21,14 @@ namespace ExportReaperMarkersToGrandMA2
             string[] response;
             using (WebClient webClient = new WebClient())
             {
-                response = webClient.DownloadString("https://raw.githubusercontent.com/Hawk141198/GrandMA2-ExportTimecode/master/version").Split(new[] { Environment.NewLine}, StringSplitOptions.None);
+                string file = webClient.DownloadString("https://raw.githubusercontent.com/Hawk141198/GrandMA2-ExportTimecode/master/version");
+                response = file.Split(new[] { "\n" }, StringSplitOptions.None);
             }
             
             if (float.Parse(response[1]) > float.Parse(version))
             {
                 MessageBox.Show("Sie verwenden eine alte Version (" + version + ")!\n"+
-                    "Die Version " + response + " ist bereits verfügbar!\n"+
+                    "Die Version " + response[1] + " ist bereits verfügbar!\n"+
                     "Sie können unter 'Updates' in der Menüleiste die neue Version herunterladen!", "Neue Version verfügbar!", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 

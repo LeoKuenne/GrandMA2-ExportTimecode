@@ -27,7 +27,8 @@ namespace ExportReaperMarkersToGrandMA2
             string Changelog = "";
             using (WebClient webClient = new WebClient())
             {
-                response = webClient.DownloadString("https://raw.githubusercontent.com/Hawk141198/GrandMA2-ExportTimecode/master/version").Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                string file = webClient.DownloadString("https://raw.githubusercontent.com/Hawk141198/GrandMA2-ExportTimecode/master/version");
+                response = file.Split(new[] { "\n" }, StringSplitOptions.None);
             }
 
             for (int i = 2; i < response.Length; i++)
@@ -40,8 +41,9 @@ namespace ExportReaperMarkersToGrandMA2
                 lblInfo.Text = "Sie benutzten eine alte Version! Es ist bereits eine aktuellere Version verfügbar!" +
                     "\n" +
                     "Ihre Version: " + Program.version +"\n" +
-                    "Neue Version: " + response + "\n" +
-                    "Wollen Sie die neue Version herunterladen?" + Changelog;
+                    "Neue Version: " + response[1] + "\n" +
+                    "Wollen Sie die neue Version herunterladen?";
+                richTextBox1.Text = Changelog;
                 button1.Enabled = true;
             }
             else if(float.Parse(response[1]) == float.Parse(Program.version))
@@ -60,7 +62,7 @@ namespace ExportReaperMarkersToGrandMA2
 
         private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            lbl_DownloadInfo.Text = "Download abgeschlossen!";
+            lbl_DownloadInfo.Text = "Download abgeschlossen! Die aktuelle Version liegt in dem selben Ordner wie diese Version!";
         }
 
         private void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
