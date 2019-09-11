@@ -14,7 +14,7 @@ namespace ExportReaperMarkersToGrandMA2
     public partial class NetworkTransmitDialog : Form
     {
         private Timecode Timecode;
-        private Telnet Telnet;
+        private Telnet TelnetInterface;
         private string[] Cmds;
         
 
@@ -24,7 +24,7 @@ namespace ExportReaperMarkersToGrandMA2
             
             this.Timecode = tc;
             this.cB_Mode.SelectedIndex = 0;
-            this.Telnet = null;
+            this.TelnetInterface = null;
         }
 
         private void cB_TransmitType_SelectedIndexChanged(object sender, EventArgs e)
@@ -32,7 +32,7 @@ namespace ExportReaperMarkersToGrandMA2
 
         }
 
-        private void btn_send_Click(object sender, EventArgs e)
+        private async void btn_send_Click(object sender, EventArgs e)
         {
             try
             {
@@ -41,9 +41,9 @@ namespace ExportReaperMarkersToGrandMA2
                     case 0:
                         Cmds = Timecode.getMacroLines();
                         
-                        Telnet = new Telnet(txt_ip.Text, Cmds, txt_username.Text, txt_password.Text);
-                        Telnet.OnConnectionChange += new EventHandler<TelnetConnectEventArgs>(OnTelnetConnectionChange);
-                        Telnet.Connect();
+                        TelnetInterface = new Telnet(txt_ip.Text, Cmds, txt_username.Text, txt_password.Text);
+                        TelnetInterface.OnConnectionChange += new EventHandler<TelnetConnectEventArgs>(OnTelnetConnectionChange);
+                        await TelnetInterface.Connect();
                        
                         break;
 
@@ -144,11 +144,11 @@ namespace ExportReaperMarkersToGrandMA2
                     progressBar1.Value = 0;
 
 
-                    Telnet.OnCommandSend += new EventHandler<TelnetProgressEventArgs>(this.OnCommandSend);
-                    Telnet.OnFeedbackRecieved += new EventHandler<TelnetProgressEventArgs>(this.OnFeedbackRecieve);
-                    Telnet.OnProgressFinished += new EventHandler<TelnetProgressEventArgs>(this.OnProgressFinished);
+                    TelnetInterface.OnCommandSend += new EventHandler<TelnetProgressEventArgs>(this.OnCommandSend);
+                    TelnetInterface.OnFeedbackRecieved += new EventHandler<TelnetProgressEventArgs>(this.OnFeedbackRecieve);
+                    TelnetInterface.OnProgressFinished += new EventHandler<TelnetProgressEventArgs>(this.OnProgressFinished);
 
-                    Telnet.Run();
+                    TelnetInterface.Run();
 
                     btn_send.Enabled = true;
                     txt_ip.Enabled = true;

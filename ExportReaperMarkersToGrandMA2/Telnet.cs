@@ -67,7 +67,7 @@ public class Telnet
 
     }
 
-    public async void Connect()
+    public async Task Connect()
     {
         try
         {
