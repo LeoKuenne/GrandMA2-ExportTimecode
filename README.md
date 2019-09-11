@@ -23,5 +23,5 @@ Es ist geplant, dass man zudem auch noch übers Netzwerk das Timecode-Poolitem e
 ## Wie bekomm ich das Tool?
 In dem Ordner ExportReaperMarkersToGrandMA2/bin/Release/ die Datei [ExportReaperMarkersToGrandMA2.exe](ExportReaperMarkersToGrandMA2/bin/Release/ExportReaperMarkersToGrandMA2.exe) runterladen und ausführen!
 
-##Bei Fragen?
+## Bei Fragen?
 Bei Fragen gerne einfach an lk@lightemotions.net wenden und ich werde gerne weiterhelfen!
