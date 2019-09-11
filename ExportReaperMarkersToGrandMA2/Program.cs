@@ -13,7 +13,7 @@ namespace ExportReaperMarkersToGrandMA2
 {
     static class Program
     {
-        public static string version = "1.3";
+        public static string version = "1.4";
 
         [STAThread]
         static void Main()
