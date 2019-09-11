@@ -17,6 +17,11 @@ GrandMA2-ExportTimecode liest diese Datei ein und zeigt sie dem Nutzer an. Diese
 Zeiten anpassen, Nummern anpassen oder den Namen ändern. Zudem können weitere Einstellungen vorgenommen werden.
 Danach wird auf einem USB-Stick oder lokal ein Makro gespeichert. Dabei muss nur der GrandMA2-Ordner ausgewält werden, keine Unterverzeichniss!
 Dieses Makro wird in die GrandMA2-Software importiert und dann ausgeführt. Es importiert automatisch die Marker, speichert die passende Cues und erstellt das passende Timecode-Poolitem.
+Alternativ gibt es mit der neuen Version 1.4 auch die Möglichkeit, seine Sequenz direkt von dem ausführenden Rechner übers Netzwerk auf der Konsole zu erstellen.
+Es ist geplant, dass man zudem auch noch übers Netzwerk das Timecode-Poolitem erstellen kann.
 
 ## Wie bekomm ich das Tool?
 In dem Ordner ExportReaperMarkersToGrandMA2/bin/Release/ die Datei [ExportReaperMarkersToGrandMA2.exe](ExportReaperMarkersToGrandMA2/bin/Release/ExportReaperMarkersToGrandMA2.exe) runterladen und ausführen!
+
+## Bei Fragen?
+Bei Fragen gerne einfach an lk@lightemotions.net wenden und ich werde gerne weiterhelfen!

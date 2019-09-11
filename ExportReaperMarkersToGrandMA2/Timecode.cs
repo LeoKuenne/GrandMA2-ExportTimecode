@@ -3,33 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace ExportReaperMarkersToGrandMA2
 {
-    class Timecode
+    public class Timecode
     {
         public TimecodeEvent[] timecodeEvents { get; set; }
         
-        private int Page;
-        private int Exec;
-        private int Seq;
-        private string SeqName;
-        private int Tc;
-        private string TcName;
-        private int FrameRate;
+        private int page;
+        private int exec;
+        private int seq_item;
+        private string seq_Name;
+        private int tc_item;
+        private string tc_name;
+        private int frameRate;
         private string defaultTrigger;
 
 
         public Timecode(int page, int exec, int seq, string seqname, int tc, string tcname, int framerate, string defaultTrigger)
         {
-            this.Page = page;
-            this.Exec = exec;
-            this.Seq = seq;
-            this.SeqName = seqname;
-            this.Tc = tc;
-            this.TcName = tcname;
-            this.FrameRate = framerate;
+            this.page = page;
+            this.exec = exec;
+            this.seq_item = seq;
+            this.seq_Name = seqname;
+            this.tc_item = tc;
+            this.tc_name = tcname;
+            this.frameRate = framerate;
             this.defaultTrigger = defaultTrigger;
         }
 
@@ -48,12 +49,13 @@ namespace ExportReaperMarkersToGrandMA2
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Ein Fehler ist aufgetreten beim konvertieren von der Reaper CSV-Datei in ein internes Format:\n" + ex.ToString(), "Fehler beim konvertieren des Timecodes!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true;
         }
 
-        public void save(String path)
+        public void saveTimecodeXML(String path)
         {
             XmlDocument xmlDoc = new XmlDocument();
 
@@ -150,35 +152,123 @@ namespace ExportReaperMarkersToGrandMA2
             xmlDoc.Save(path + "\\" + GetTcName() + ".xml");
 
         }
-        
+
+        public void saveMacroXML(string path)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+
+            xmlDoc.AppendChild(xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
+
+            XmlNode nodeMA = xmlDoc.CreateElement("MA");
+
+            XmlAttribute nodeMAAttribute_XMLNSXSI = xmlDoc.CreateAttribute("xmlns:xsi");
+            nodeMAAttribute_XMLNSXSI.Value = "http://www.w3.org/2001/XMLSchema-instance";
+
+            XmlAttribute nodeMAAttribute_XMLNS = xmlDoc.CreateAttribute("xmlns");
+            nodeMAAttribute_XMLNS.Value = "http://schemas.malighting.de/grandma2/xml/MA";
+
+            XmlAttribute nodeMAAttribute_XSI = xmlDoc.CreateAttribute("xsi:schemaLocation");
+            nodeMAAttribute_XSI.Value = "http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/3.4.0/MA.xsd";
+
+            nodeMA.Attributes.Append(nodeMAAttribute_XMLNS);
+            nodeMA.Attributes.Append(nodeMAAttribute_XMLNSXSI);
+            nodeMA.Attributes.Append(nodeMAAttribute_XSI);
+            xmlDoc.AppendChild(nodeMA);
+
+            XmlNode nodeInfo = xmlDoc.CreateElement("Info");
+            XmlAttribute nodeInfoAttribute_DateTime = xmlDoc.CreateAttribute("index");
+            nodeInfoAttribute_DateTime.Value = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            XmlAttribute nodeInfoAttribute_Showfile = xmlDoc.CreateAttribute("name");
+            nodeInfoAttribute_Showfile.Value = "ExportReaperMarkerToGrandMA2";
+
+            nodeInfo.Attributes.Append(nodeInfoAttribute_DateTime);
+            nodeInfo.Attributes.Append(nodeInfoAttribute_Showfile);
+            nodeMA.AppendChild(nodeInfo);
+
+            XmlNode nodeMacro = xmlDoc.CreateElement("Macro");
+            XmlAttribute nodeMacroAttrib_index = xmlDoc.CreateAttribute("index");
+            nodeMacroAttrib_index.Value = "1";
+
+            XmlAttribute nodeMacroAttrib_name = xmlDoc.CreateAttribute("name");
+            nodeMacroAttrib_name.Value = "Import Reaper Marker as Timecode";
+
+            nodeMacro.Attributes.Append(nodeMacroAttrib_index);
+            nodeMacro.Attributes.Append(nodeMacroAttrib_name);
+            nodeMA.AppendChild(nodeMacro);
+
+            string[] macroLines = getMacroLines();
+            for (int i = 0; i < macroLines.Length; i++)
+            {
+                addMacroLine(xmlDoc, nodeMacro, i+1, macroLines[i]);
+            }
+            xmlDoc.Save(path + "\\" + tc_name + ".xml");
+
+        }
+
+        private void addMacroLine(XmlDocument doc, XmlNode parent, int index, string cmd)
+        {
+            XmlNode node = doc.CreateElement("Macroline");
+            XmlAttribute node_index = doc.CreateAttribute("index");
+            node_index.Value = index.ToString();
+
+            XmlNode node_text = doc.CreateElement("text");
+            node_text.InnerText = cmd;
+
+            node.Attributes.Append(node_index);
+            node.AppendChild(node_text);
+            parent.AppendChild(node);
+        }
+
+        public string[] getMacroLines()
+        {
+            string[] macroLines = new string[this.timecodeEvents.Length + 7];
+
+            int index = 1;
+
+            foreach (TimecodeEvent e in this.timecodeEvents)
+            {
+                macroLines[index++] = "Store Seq " + seq_item + " Cue " + e.Cue + " \"" + e.Name + "\" /o /nc";
+            }
+
+            macroLines[index++] = "Label Seq " + seq_item + " \"" + seq_Name + "\"";
+            macroLines[index++] = "Store Page " + page + "";
+            macroLines[index++] = "Assign Seq " + seq_item + " At Exec 1." + page + "." + exec + "";
+            macroLines[index++] = "SelectDrive 4";
+            macroLines[index++] = "Import \"" + tc_name + ".xml\" At Timecode " + tc_item + " /o";
+            macroLines[index++] = "Label Timecode " + tc_item + " \"" + tc_name + "\" /o /nc";
+
+            return macroLines;
+        }
+
         public int GetPage()
         {
-            return Page;
+            return page;
         }
 
         public void SetPage(int value)
         {
-            this.Page = value;
+            this.page = value;
         }
 
         public int GetExec()
         {
-            return Exec;
+            return exec;
         }
 
         public void SetExec(int value)
         {
-            this.Exec = value;
+            this.exec = value;
         }
 
         public int GetSeq()
         {
-            return Seq;
+            return seq_item;
         }
 
         public void SetSeq(int value)
         {
-            Seq = value;
+            seq_item = value;
             foreach(TimecodeEvent t in timecodeEvents)
             {
                 t.Seq = value;
@@ -187,42 +277,42 @@ namespace ExportReaperMarkersToGrandMA2
 
         public string GetSeqName()
         {
-            return SeqName;
+            return seq_Name;
         }
 
         public void SetSeqName(string value)
         {
-            SeqName = value;
+            seq_Name = value;
         }
 
         public int GetTc()
         {
-            return Tc;
+            return tc_item;
         }
 
         public void SetTc(int value)
         {
-            Tc = value;
+            tc_item = value;
         }
 
         public string GetTcName()
         {
-            return TcName;
+            return tc_name;
         }
 
         public void SetTcName(string value)
         {
-            TcName = value;
+            tc_name = value;
         }
 
         public int GetFrameRate()
         {
-            return FrameRate;
+            return frameRate;
         }
 
         public void SetFrameRate(int value)
         {
-            FrameRate = value;
+            frameRate = value;
             foreach (TimecodeEvent e in timecodeEvents) e.SetFps(value);
         }
 

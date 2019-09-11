@@ -61,6 +61,9 @@
             this.tableLayoutPanel_Main = new System.Windows.Forms.TableLayoutPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extensionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.networkuploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gB_Open.SuspendLayout();
             this.tableLayoutPanel_Open.SuspendLayout();
             this.gB_Timecode.SuspendLayout();
@@ -85,7 +88,7 @@
             this.gB_Open.AutoSize = true;
             this.gB_Open.Controls.Add(this.tableLayoutPanel_Open);
             this.gB_Open.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gB_Open.Location = new System.Drawing.Point(3, 23);
+            this.gB_Open.Location = new System.Drawing.Point(3, 28);
             this.gB_Open.Name = "gB_Open";
             this.gB_Open.Size = new System.Drawing.Size(762, 44);
             this.gB_Open.TabIndex = 0;
@@ -133,9 +136,9 @@
             // 
             this.gB_Timecode.Controls.Add(this.tableLayoutPanel_Timecode);
             this.gB_Timecode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gB_Timecode.Location = new System.Drawing.Point(3, 73);
+            this.gB_Timecode.Location = new System.Drawing.Point(3, 78);
             this.gB_Timecode.Name = "gB_Timecode";
-            this.gB_Timecode.Size = new System.Drawing.Size(762, 227);
+            this.gB_Timecode.Size = new System.Drawing.Size(762, 222);
             this.gB_Timecode.TabIndex = 1;
             this.gB_Timecode.TabStop = false;
             this.gB_Timecode.Text = "Timecode Pool Item konfigurieren";
@@ -157,7 +160,7 @@
             this.tableLayoutPanel_Timecode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel_Timecode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel_Timecode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel_Timecode.Size = new System.Drawing.Size(756, 208);
+            this.tableLayoutPanel_Timecode.Size = new System.Drawing.Size(756, 203);
             this.tableLayoutPanel_Timecode.TabIndex = 0;
             // 
             // gB_Exec
@@ -168,9 +171,9 @@
             this.gB_Exec.Controls.Add(this.lbl_ExecPage);
             this.gB_Exec.Controls.Add(this.num_ExecPage);
             this.gB_Exec.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gB_Exec.Location = new System.Drawing.Point(339, 72);
+            this.gB_Exec.Location = new System.Drawing.Point(339, 70);
             this.gB_Exec.Name = "gB_Exec";
-            this.gB_Exec.Size = new System.Drawing.Size(414, 63);
+            this.gB_Exec.Size = new System.Drawing.Size(414, 61);
             this.gB_Exec.TabIndex = 9;
             this.gB_Exec.TabStop = false;
             this.gB_Exec.Text = "Wähle den Executor der Timecode Spur";
@@ -244,7 +247,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.tableLayoutPanel_Timecode.SetRowSpan(this.dataGridView1, 3);
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(330, 202);
+            this.dataGridView1.Size = new System.Drawing.Size(330, 197);
             this.dataGridView1.TabIndex = 8;
             this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
             // 
@@ -260,9 +263,9 @@
             this.gB_TimecodeItem.Controls.Add(this.num_TcItem);
             this.gB_TimecodeItem.Controls.Add(this.lbl_TcItem);
             this.gB_TimecodeItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gB_TimecodeItem.Location = new System.Drawing.Point(339, 141);
+            this.gB_TimecodeItem.Location = new System.Drawing.Point(339, 137);
             this.gB_TimecodeItem.Name = "gB_TimecodeItem";
-            this.gB_TimecodeItem.Size = new System.Drawing.Size(414, 64);
+            this.gB_TimecodeItem.Size = new System.Drawing.Size(414, 63);
             this.gB_TimecodeItem.TabIndex = 7;
             this.gB_TimecodeItem.TabStop = false;
             this.gB_TimecodeItem.Text = "Wähle das Timecode Pool Item:";
@@ -381,7 +384,7 @@
             this.gB_Seq.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gB_Seq.Location = new System.Drawing.Point(339, 3);
             this.gB_Seq.Name = "gB_Seq";
-            this.gB_Seq.Size = new System.Drawing.Size(414, 63);
+            this.gB_Seq.Size = new System.Drawing.Size(414, 61);
             this.gB_Seq.TabIndex = 6;
             this.gB_Seq.TabStop = false;
             this.gB_Seq.Text = "Wähle die Sequenz der Timecode Spur:";
@@ -494,7 +497,7 @@
             this.tableLayoutPanel_Main.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel_Main.Name = "tableLayoutPanel_Main";
             this.tableLayoutPanel_Main.RowCount = 4;
-            this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
@@ -505,10 +508,13 @@
             // 
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.extensionsToolStripMenuItem,
+            this.updatesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(768, 20);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 0);
+            this.menuStrip1.Size = new System.Drawing.Size(768, 25);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -516,9 +522,34 @@
             // 
             this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 16);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
             this.helpToolStripMenuItem.Text = "Hilfe";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            // 
+            // extensionsToolStripMenuItem
+            // 
+            this.extensionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.networkuploadToolStripMenuItem});
+            this.extensionsToolStripMenuItem.Enabled = false;
+            this.extensionsToolStripMenuItem.Name = "extensionsToolStripMenuItem";
+            this.extensionsToolStripMenuItem.Size = new System.Drawing.Size(95, 23);
+            this.extensionsToolStripMenuItem.Text = "Erweiterungen";
+            // 
+            // networkuploadToolStripMenuItem
+            // 
+            this.networkuploadToolStripMenuItem.Enabled = false;
+            this.networkuploadToolStripMenuItem.Name = "networkuploadToolStripMenuItem";
+            this.networkuploadToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.networkuploadToolStripMenuItem.Text = "Netzwerk-Upload";
+            this.networkuploadToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            // 
+            // updatesToolStripMenuItem
+            // 
+            this.updatesToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.updatesToolStripMenuItem.Name = "updatesToolStripMenuItem";
+            this.updatesToolStripMenuItem.Size = new System.Drawing.Size(62, 23);
+            this.updatesToolStripMenuItem.Text = "Updates";
+            this.updatesToolStripMenuItem.Click += new System.EventHandler(this.updatesToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -597,6 +628,9 @@
         private System.Windows.Forms.Label lbl_TcDefaultTrigger;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extensionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem networkuploadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem updatesToolStripMenuItem;
     }
 }
 
