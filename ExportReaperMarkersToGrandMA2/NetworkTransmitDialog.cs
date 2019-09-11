@@ -8,13 +8,14 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Telnet;
 
 namespace ExportReaperMarkersToGrandMA2
 {
     public partial class NetworkTransmitDialog : Form
     {
         private Timecode Timecode;
-        private Telnet TelnetInterface;
+        private TelnetInterface TelnetInterface;
         private string[] Cmds;
         
 
@@ -41,7 +42,7 @@ namespace ExportReaperMarkersToGrandMA2
                     case 0:
                         Cmds = Timecode.getMacroLines();
                         
-                        TelnetInterface = new Telnet(txt_ip.Text, Cmds, txt_username.Text, txt_password.Text);
+                        TelnetInterface = new TelnetInterface(txt_ip.Text, Cmds, txt_username.Text, txt_password.Text);
                         TelnetInterface.OnConnectionChange += new EventHandler<TelnetConnectEventArgs>(OnTelnetConnectionChange);
                         await TelnetInterface.Connect();
                        
@@ -109,14 +110,14 @@ namespace ExportReaperMarkersToGrandMA2
         {
             progressBar1.PerformStep();
             ConsoleOutput("Send:", Color.Green, FontStyle.Bold);
-            ConsoleOutput(" \t" + e.command + "\n");
+            ConsoleOutput(" \t" + e.Command + "\n");
         }
 
         private void OnFeedbackRecieve(object sender, TelnetProgressEventArgs e)
         {
 
             ConsoleOutput("Recieve:", Color.Green, FontStyle.Bold);
-            ConsoleOutput(" " + e.command + "\n");
+            ConsoleOutput(" " + e.Command + "\n");
         }
 
         private void OnProgressFinished(object sender, TelnetProgressEventArgs e)
@@ -127,9 +128,9 @@ namespace ExportReaperMarkersToGrandMA2
 
         private void OnTelnetConnectionChange(object sender, TelnetConnectEventArgs e)
         {
-            switch (e.state)
+            switch (e.State)
             {
-                case TelnetConnectEventArgs.Connecting:
+                case TelnetConnectionStatus.Connecting:
                     ConsoleOutput("Verbindung nach " + txt_ip.Text + " wird aufgebaut... Bitte warten...\n", Color.Black, FontStyle.Bold);
                     progressBar1.Style = ProgressBarStyle.Marquee;
                     progressBar1.Value = 0;
@@ -139,7 +140,7 @@ namespace ExportReaperMarkersToGrandMA2
                     txt_username.Enabled = false;
                     break;
 
-                case TelnetConnectEventArgs.Connected:
+                case TelnetConnectionStatus.Connected:
 
                     progressBar1.Style = ProgressBarStyle.Continuous;
                     progressBar1.Minimum = 0;
@@ -159,7 +160,7 @@ namespace ExportReaperMarkersToGrandMA2
                     txt_password.Enabled = true;
                     txt_username.Enabled = true;
                     break;
-                case TelnetConnectEventArgs.Timeout:
+                case TelnetConnectionStatus.Timeout:
                     progressBar1.Style = ProgressBarStyle.Continuous;
                     progressBar1.Value = 0;
                     btn_send.Enabled = true;
