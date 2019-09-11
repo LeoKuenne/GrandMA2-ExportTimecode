@@ -181,5 +181,11 @@ namespace ExportReaperMarkersToGrandMA2
             NetworkTransmitDialog dia = new NetworkTransmitDialog(timecode);
             dia.Show();
         }
+
+        private void updatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateDialog updateDialog = new UpdateDialog();
+            updateDialog.Show();
+        }
     }
 }
