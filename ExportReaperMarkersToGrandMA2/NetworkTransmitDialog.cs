@@ -57,6 +57,10 @@ namespace ExportReaperMarkersToGrandMA2
             {
                 ConsoleOutput("GrandMA2 Kommando konnte nicht ausgeführt werden!\n", Color.Red, FontStyle.Bold);
                 progressBar1.Value = 0;
+                btn_send.Enabled = true;
+                txt_ip.Enabled = true;
+                txt_password.Enabled = true;
+                txt_username.Enabled = true;
                 MessageBox.Show("Ein Fehler ist aufgetreten beim ausführen des folgenden Kommando:\t" + eMA.command + "\nFehlermeldung:\t" + eMA.error, "GrandMA2 Command wurde nicht ausgeführt!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (TelnetConnectionException eTel)
