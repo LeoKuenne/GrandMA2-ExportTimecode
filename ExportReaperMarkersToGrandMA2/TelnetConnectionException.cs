@@ -1,33 +1,34 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-[Serializable]
-internal class TelnetConnectionException : Exception
+namespace Telnet
 {
-    public const int Refused = 1;
-    public const int LOGIN_INCORRECT = 2;
-
-    public int state { get; set; }
-
-    public TelnetConnectionException()
+    [Serializable]
+    internal class TelnetConnectionException : Exception
     {
-    }
 
-    public TelnetConnectionException(int state)
-    {
-        this.state = state;
-    }
+        public TelnetConnectionStatus State { get; set; }
 
-    public TelnetConnectionException(string message) : base(message)
-    {
-    }
+        public TelnetConnectionException()
+        {
+        }
 
-    public TelnetConnectionException(string message, Exception innerException) : base(message, innerException)
-    {
-    }
+        public TelnetConnectionException(TelnetConnectionStatus state)
+        {
+            this.State = state;
+        }
 
-    protected TelnetConnectionException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
+        public TelnetConnectionException(string message) : base(message)
+        {
+        }
 
+        public TelnetConnectionException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected TelnetConnectionException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+
+    }
 }

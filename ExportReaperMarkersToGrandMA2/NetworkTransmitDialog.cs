@@ -70,6 +70,21 @@ namespace ExportReaperMarkersToGrandMA2
                         break;
 
                     case 2: // Build seq + timecode
+
+                        SFTPClient = new FTPClient(txt_ip.Text, "data", "data", Timecode);
+                        SFTPClient.OnConnectionChanged += OnFTPClientConnectionChange;
+                        await SFTPClient.Connect();
+                        
+                        Cmds = Timecode.getMacroLines();
+                        Cmds[Cmds.Length - 3] = "SelectDrive 1";
+                        Cmds[Cmds.Length - 2] = "Import \"" + Timecode.GetTcName() + ".xml\" At Timecode " + Timecode.GetTc() + " /o";
+                        Cmds[Cmds.Length - 1] = "Label Timecode " + Timecode.GetTc() + " \"" + Timecode.GetTcName() + "\" /o /nc";
+
+
+                        TelnetInterface = new TelnetInterface(txt_ip.Text, Cmds, txt_username.Text, txt_password.Text);
+                        TelnetInterface.OnConnectionChange += new EventHandler<TelnetConnectEventArgs>(OnTelnetConnectionChange);
+                        await TelnetInterface.Connect();
+
                         break;
 
                     default:
@@ -81,18 +96,19 @@ namespace ExportReaperMarkersToGrandMA2
             catch (MA2CommandNotExecutedException eMA)
             {
                 ConsoleOutput("GrandMA2 Kommando konnte nicht ausgeführt werden!\n", Color.Red, FontStyle.Bold);
-                progressBar1.Value = 0;
-                btn_send.Enabled = true;
-                txt_ip.Enabled = true;
-                txt_password.Enabled = true;
-                txt_username.Enabled = true;
                 MessageBox.Show("Ein Fehler ist aufgetreten beim ausführen des folgenden Kommando:\t" + eMA.command + "\nFehlermeldung:\t" + eMA.error, "GrandMA2 Command wurde nicht ausgeführt!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (TelnetConnectionException eTel)
             {
-                switch (eTel.state)
+                switch (eTel.State)
                 {
-                    case TelnetConnectionException.Refused:
+                    case TelnetConnectionStatus.Disabled:
+                        ConsoleOutput("Telnet Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
+                        MessageBox.Show("Die Telnet-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n" +
+                            "Die Telnet Schnittstelle ist inaktiv!\n\n" +
+                            "- Setup -> Global Settings -> Telnet muss auf 'Login Enabled' stehen\n", "Fehler beim verbinden zur GrandMA2-Konsole!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case TelnetConnectionStatus.Timeout:
                         ConsoleOutput("Telnet Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
                         MessageBox.Show("Die Telnet-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n" +
                             "Folgende Punkte müssen beachtet werden:\n\n" +
@@ -100,7 +116,7 @@ namespace ExportReaperMarkersToGrandMA2
                             "- Dieser PC muss mit dem MA-Net verbunden sein und mit ihm kommunizieren können. " +
                             "Mehr dazu unter 'Networking' des GrandMA2 User-Manuals. \n", "Fehler beim verbinden zur GrandMA2-Konsole!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
-                    case TelnetConnectionException.LOGIN_INCORRECT:
+                    case TelnetConnectionStatus.LoginNeeded:
                         ConsoleOutput("Telnet Verbindung nicht möglich! Falsche Anmeldedaten!\n", Color.Red, FontStyle.Bold);
                         progressBar1.Value = 0;
                         MessageBox.Show("Die Telnet-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n\n" +
@@ -128,6 +144,15 @@ namespace ExportReaperMarkersToGrandMA2
                         break;
                 }
 
+            }
+            finally
+            {
+                progressBar1.Style = ProgressBarStyle.Continuous;
+                progressBar1.Value = 0;
+                btn_send.Enabled = true;
+                txt_ip.Enabled = true;
+                txt_password.Enabled = true;
+                txt_username.Enabled = true;
             }
 
         }

@@ -22,6 +22,8 @@ namespace Telnet {
         Connecting = 1,
         Connected = 2,
         Timeout = 3,
+        LoginNeeded = 4,
+        Disabled = 5
     }
     
     public class TelnetInterface
@@ -95,16 +97,16 @@ namespace Telnet {
                 NetworkStream = Socket.GetStream();
                 InputStream = new StreamReader(NetworkStream);
                 OutputStream = new StreamWriter(NetworkStream);
-
-
+                
                 this.OnFeedbackRecieved += new EventHandler<TelnetProgressEventArgs>(onFeedbackRecieved);
+                RecieveFeedback();
 
                 OnConnectionChange(this, new TelnetConnectEventArgs("", TelnetConnectionStatus.Connected));
             }
             catch (SocketException)
             {
                 OnConnectionChange(this, new TelnetConnectEventArgs("", TelnetConnectionStatus.Timeout));
-                throw new TelnetConnectionException(TelnetConnectionException.Refused);
+                throw new TelnetConnectionException(TelnetConnectionStatus.Timeout);
             }
         }
 
@@ -227,7 +229,12 @@ namespace Telnet {
         {
             if (e.Command.Contains("LOGIN NEEDED") || e.Command.Contains("Login incorrect"))
             {
-                throw new TelnetConnectionException(TelnetConnectionException.LOGIN_INCORRECT);
+                throw new TelnetConnectionException(TelnetConnectionStatus.LoginNeeded);
+            }
+
+            if (e.Command.Contains("Remote commandline disabled"))
+            {
+                throw new TelnetConnectionException(TelnetConnectionStatus.Disabled);
             }
 
             if (e.Command.Contains("Error #")) ex = new MA2CommandNotExecutedException(e.Command);
