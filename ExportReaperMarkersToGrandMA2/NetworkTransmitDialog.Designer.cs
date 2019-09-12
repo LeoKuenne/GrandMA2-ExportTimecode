@@ -150,7 +150,9 @@
             this.cB_Mode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cB_Mode.FormattingEnabled = true;
             this.cB_Mode.Items.AddRange(new object[] {
-            "Erstelle Sequence"});
+            "Erstelle Sequence",
+            "Erstelle Timecode",
+            "Erstelle Sequence + Timecode"});
             this.cB_Mode.Location = new System.Drawing.Point(261, 3);
             this.cB_Mode.Name = "cB_Mode";
             this.cB_Mode.Size = new System.Drawing.Size(247, 21);

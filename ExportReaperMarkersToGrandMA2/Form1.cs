@@ -91,7 +91,7 @@ namespace ExportReaperMarkersToGrandMA2
                 }
 
 
-                timecode.saveTimecodeXML(folderBrowserDialog.SelectedPath + "\\importexport");
+                timecode.saveTimecodeXMLToFile(folderBrowserDialog.SelectedPath + "\\importexport");
                 timecode.saveMacroXML(folderBrowserDialog.SelectedPath + "\\macros");
 
                 MessageBox.Show("Datei gespeichert!", "Speichern", MessageBoxButtons.OK, MessageBoxIcon.Information);

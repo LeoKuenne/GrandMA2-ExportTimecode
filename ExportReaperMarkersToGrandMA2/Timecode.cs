@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,8 +56,44 @@ namespace ExportReaperMarkersToGrandMA2
             return true;
         }
 
-        public void saveTimecodeXML(String path)
+        public void saveTimecodeXMLToFile(String path)
         {
+            XmlDocument xmlDoc = createTimecodeXML();
+
+            xmlDoc.Save(path + "\\" + GetTcName() + ".xml");   
+        }
+
+        public StreamReader GetTimecodeXMLStream()
+        {
+            XmlDocument xmlDoc = createTimecodeXML();
+
+            using (var stringWriter = new StringWriter())
+            using (var xmlTextWriter = XmlWriter.Create(stringWriter))
+            {
+                xmlDoc.WriteTo(xmlTextWriter);
+                xmlTextWriter.Flush();
+                StringBuilder sb = stringWriter.GetStringBuilder();
+
+                string s = sb.ToString();
+                
+                char[] c = s.ToCharArray();
+                byte[] b = new byte[c.Length];
+                for(int i = 0; i < b.Length; i++)
+                {
+                    b[i] = (byte) c[i];
+                }
+                
+                MemoryStream memoryStream = new MemoryStream(b);
+                memoryStream.Position = 0;
+
+                StreamReader streamReader = new StreamReader(memoryStream);
+
+                return streamReader;
+            }
+        }
+
+        public XmlDocument createTimecodeXML() {
+
             XmlDocument xmlDoc = new XmlDocument();
 
             xmlDoc.AppendChild(xmlDoc.CreateXmlDeclaration("1.0", "UTF-8",null));
@@ -67,13 +104,9 @@ namespace ExportReaperMarkersToGrandMA2
             XmlAttribute nodeMAAttribute_XMLNSXSI = xmlDoc.CreateAttribute("xmlns:xsi");
             nodeMAAttribute_XMLNSXSI.Value = "http://www.w3.org/2001/XMLSchema-instance";
 
-            XmlAttribute nodeMAAttribute_XMLNS = xmlDoc.CreateAttribute("xmlns");
-            nodeMAAttribute_XMLNS.Value = "http://schemas.malighting.de/grandma2/xml/MA";
-
             XmlAttribute nodeMAAttribute_XSI = xmlDoc.CreateAttribute("xsi:schemaLocation");
             nodeMAAttribute_XSI.Value = "http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/3.4.0/MA.xsd";
-
-            nodeMA.Attributes.Append(nodeMAAttribute_XMLNS);
+            
             nodeMA.Attributes.Append(nodeMAAttribute_XMLNSXSI);
             nodeMA.Attributes.Append(nodeMAAttribute_XSI);
             xmlDoc.AppendChild(nodeMA);
@@ -149,8 +182,7 @@ namespace ExportReaperMarkersToGrandMA2
                 t.writeXML(nodeSubTrack, xmlDoc);
             }
 
-            xmlDoc.Save(path + "\\" + GetTcName() + ".xml");
-
+            return xmlDoc;
         }
 
         public void saveMacroXML(string path)

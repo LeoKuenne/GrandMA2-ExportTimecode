@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FTP;
+using Telnet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,7 +10,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Telnet;
 
 namespace ExportReaperMarkersToGrandMA2
 {
@@ -16,6 +17,7 @@ namespace ExportReaperMarkersToGrandMA2
     {
         private Timecode Timecode;
         private TelnetInterface TelnetInterface;
+        private FTPClient FTPClient;
         private string[] Cmds;
         
 
@@ -39,13 +41,35 @@ namespace ExportReaperMarkersToGrandMA2
             {
                 switch (cB_Mode.SelectedIndex)
                 {
-                    case 0:
+                    case 0: // Build seq
                         Cmds = Timecode.getMacroLines();
                         
                         TelnetInterface = new TelnetInterface(txt_ip.Text, Cmds, txt_username.Text, txt_password.Text);
                         TelnetInterface.OnConnectionChange += new EventHandler<TelnetConnectEventArgs>(OnTelnetConnectionChange);
                         await TelnetInterface.Connect();
                        
+                        break;
+
+
+                    case 1: // Build timecode
+
+                        FTPClient = new FTPClient(txt_ip.Text, "data", "data", Timecode);
+                        FTPClient.Run();
+                        
+                        /*
+                        Cmds = new string[3];
+                        int index = 0;
+                        Cmds[index++] = "SelectDrive 1";
+                        Cmds[index++] = "Import \"" + Timecode.GetTcName() + ".xml\" At Timecode " + Timecode.GetTc() + " /o";
+                        Cmds[index++] = "Label Timecode " + Timecode.GetTc() + " \"" + Timecode.GetTcName() + "\" /o /nc";
+
+                        TelnetInterface = new TelnetInterface(txt_ip.Text, Cmds, txt_username.Text, txt_password.Text);
+                        TelnetInterface.OnConnectionChange += new EventHandler<TelnetConnectEventArgs>(OnTelnetConnectionChange);
+                        await TelnetInterface.Connect();
+                        */
+                        break;
+
+                    case 2: // Build seq + timecode
                         break;
 
                     default:
