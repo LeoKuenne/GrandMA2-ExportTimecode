@@ -10,13 +10,13 @@ namespace SFTP
     class SFTPConnectionException : Exception
     {
        
-        public FTPConnectionStatus State { get; set; }
+        public SFTPConnectionStatus State { get; set; }
 
         public SFTPConnectionException()
         {
         }
 
-        public SFTPConnectionException(FTPConnectionStatus state)
+        public SFTPConnectionException(SFTPConnectionStatus state)
         {
             this.State = state;
         }

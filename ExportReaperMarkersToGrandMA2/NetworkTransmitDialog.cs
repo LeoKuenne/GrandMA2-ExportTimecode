@@ -57,7 +57,6 @@ namespace ExportReaperMarkersToGrandMA2
                         SFTPClient.OnConnectionChanged += OnFTPClientConnectionChange;
                         await SFTPClient.Connect();
                         
-                        /*
                         Cmds = new string[3];
                         int index = 0;
                         Cmds[index++] = "SelectDrive 1";
@@ -67,7 +66,7 @@ namespace ExportReaperMarkersToGrandMA2
                         TelnetInterface = new TelnetInterface(txt_ip.Text, Cmds, txt_username.Text, txt_password.Text);
                         TelnetInterface.OnConnectionChange += new EventHandler<TelnetConnectEventArgs>(OnTelnetConnectionChange);
                         await TelnetInterface.Connect();
-                        */
+                        
                         break;
 
                     case 2: // Build seq + timecode
@@ -117,7 +116,7 @@ namespace ExportReaperMarkersToGrandMA2
             {
                 switch (eSFTP.State)
                 {
-                    case FTPConnectionStatus.Refused:
+                    case SFTPConnectionStatus.Refused:
                         ConsoleOutput("SFTP-Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
                         MessageBox.Show("Die SFTP-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n" +
                             "Folgende Punkte müssen beachtet werden:\n\n" +
@@ -143,6 +142,7 @@ namespace ExportReaperMarkersToGrandMA2
 
         }
 
+        #region EventListeners Telnet
         private void OnCommandSend(object sender, TelnetProgressEventArgs e)
         {
             progressBar1.PerformStep();
@@ -208,12 +208,14 @@ namespace ExportReaperMarkersToGrandMA2
             }
 
         }
+        #endregion
 
+        #region EventListeners SFTP
         private void OnFTPClientConnectionChange(object sender, FTPClientConnectionEventArgs e)
         {
             switch (e.State)
             {
-                case FTPConnectionStatus.Connecting:
+                case SFTPConnectionStatus.Connecting:
                     ConsoleOutput("Verbindung nach " + txt_ip.Text + " wird aufgebaut... Bitte warten...\n", Color.Black, FontStyle.Bold);
                     progressBar1.Style = ProgressBarStyle.Marquee;
                     progressBar1.Value = 0;
@@ -223,14 +225,13 @@ namespace ExportReaperMarkersToGrandMA2
                     txt_username.Enabled = false;
                     break;
 
-                case FTPConnectionStatus.Connected:
+                case SFTPConnectionStatus.Connected:
 
                     progressBar1.Style = ProgressBarStyle.Continuous;
                     progressBar1.Minimum = 0;
                     progressBar1.Maximum = 1;
                     progressBar1.Step = 1;
                     progressBar1.Value = 0;
-
                     
                     SFTPClient.OnProgressChanged += new EventHandler<FTPClientProgressEventArgs>(this.OnFTPClientProgressChange);
                     
@@ -241,7 +242,8 @@ namespace ExportReaperMarkersToGrandMA2
                     txt_password.Enabled = true;
                     txt_username.Enabled = true;
                     break;
-                case FTPConnectionStatus.Timeout:
+
+                case SFTPConnectionStatus.Timeout:
                     progressBar1.Style = ProgressBarStyle.Continuous;
                     progressBar1.Value = 0;
                     btn_send.Enabled = true;
@@ -256,15 +258,15 @@ namespace ExportReaperMarkersToGrandMA2
         {
             switch (e.State)
             {
-                case FTPProgressStatus.Uploading:
+                case SFTPProgressStatus.Uploading:
                     ConsoleOutput("Die Datei wird hochgeladen... Bitte warten...\n", Color.Black, FontStyle.Bold);
                     break;
 
-                case FTPProgressStatus.Uploaded:
+                case SFTPProgressStatus.Uploaded:
                     ConsoleOutput("Die Datei wurde erfolgreich hochgeladen!\n", Color.Green, FontStyle.Bold);
                     break;
 
-                case FTPProgressStatus.Refused:
+                case SFTPProgressStatus.Refused:
                     ConsoleOutput("Die Datei konnte nicht hochgeladen werden!\n", Color.Red, FontStyle.Bold);
                     break;
 
@@ -272,6 +274,9 @@ namespace ExportReaperMarkersToGrandMA2
                     break;
             }
         }
+        #endregion
+
+        #region Console Output Methods
 
         private void ConsoleOutput(string text)
         {
@@ -307,5 +312,7 @@ namespace ExportReaperMarkersToGrandMA2
             richTextBox1.SelectionFont = richTextBox1.Font;
 
         }
+        #endregion
+
     }
 }

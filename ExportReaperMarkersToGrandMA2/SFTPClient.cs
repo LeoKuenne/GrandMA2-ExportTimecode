@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace SFTP
 {
-    public enum FTPConnectionStatus
+    public enum SFTPConnectionStatus
     {
         Connecting = 1,
         Connected = 2,
@@ -23,7 +23,7 @@ namespace SFTP
         Disconnected = 5
     }
     
-    public enum FTPProgressStatus
+    public enum SFTPProgressStatus
     {
         Uploading = 1,
         Uploaded = 2,
@@ -43,6 +43,7 @@ namespace SFTP
 
         private SftpClient client;
 
+        private Exception exception;
 
         public event EventHandler<FTPClientConnectionEventArgs> OnConnectionChanged;
         public event EventHandler<FTPClientProgressEventArgs> OnProgressChanged;
@@ -58,23 +59,42 @@ namespace SFTP
         public async Task Connect() { 
             try
             {
-                OnConnectionChanged(this, new FTPClientConnectionEventArgs("", FTPConnectionStatus.Connecting));
+                OnConnectionChanged(this, new FTPClientConnectionEventArgs("", SFTPConnectionStatus.Connecting));
 
                 client = new SftpClient(Host, Username, Password);
-
+                
                 client.ErrorOccurred += Client_ErrorOccurred;
                 client.HostKeyReceived += Client_HostKeyReceived;
                 
-                await client.Connect();
+                await ClientConnect();
 
-                OnConnectionChanged(this, new FTPClientConnectionEventArgs("", FTPConnectionStatus.Connected));
+                if (exception != null)
+                {
+                    throw exception;
+                }
+
+                OnConnectionChanged(this, new FTPClientConnectionEventArgs("", SFTPConnectionStatus.Connected));
             }
-            catch (SocketException ex)
+            catch (SocketException)
             {
-                OnConnectionChanged(this, new FTPClientConnectionEventArgs("", FTPConnectionStatus.Refused));
-                throw new SFTPConnectionException(FTPConnectionStatus.Timeout);
+                OnConnectionChanged(this, new FTPClientConnectionEventArgs("", SFTPConnectionStatus.Refused));
+                throw new SFTPConnectionException(SFTPConnectionStatus.Timeout);
             }
 
+        }
+
+        private async Task ClientConnect()
+        {
+            await Task.Run(() => {
+                try
+                {
+                    client.Connect();
+                }
+                catch (SocketException ex)
+                {
+                    exception = ex;
+                }
+            });
         }
 
         public void Run()
@@ -87,13 +107,13 @@ namespace SFTP
             client.ChangeDirectory("/actual/gma2/importexport");
 
 
-            OnProgressChanged(this, new FTPClientProgressEventArgs("", FTPProgressStatus.Uploading));
+            OnProgressChanged(this, new FTPClientProgressEventArgs("", SFTPProgressStatus.Uploading));
 
             client.UploadFile(stream.BaseStream, Timecode.GetTcName() + ".xml", true, new Action<ulong>(callback));
 
             Thread.Sleep(1000);
 
-            OnProgressChanged(this, new FTPClientProgressEventArgs("", FTPProgressStatus.Uploaded));
+            OnProgressChanged(this, new FTPClientProgressEventArgs("", SFTPProgressStatus.Uploaded));
         
         }
 
@@ -114,12 +134,14 @@ namespace SFTP
         
     }
 
+
+
     public class FTPClientConnectionEventArgs : EventArgs
     {
-        public FTPConnectionStatus State { get; set; }
+        public SFTPConnectionStatus State { get; set; }
         public string Message { get; set; }
 
-        public FTPClientConnectionEventArgs(string message, FTPConnectionStatus status)
+        public FTPClientConnectionEventArgs(string message, SFTPConnectionStatus status)
         {
             this.Message = message;
             this.State = status;
@@ -128,10 +150,10 @@ namespace SFTP
 
     public class FTPClientProgressEventArgs : EventArgs
     {
-        public FTPProgressStatus State { get; set; }
+        public SFTPProgressStatus State { get; set; }
         public string Message { get; set; }
 
-        public FTPClientProgressEventArgs(string message, FTPProgressStatus status)
+        public FTPClientProgressEventArgs(string message, SFTPProgressStatus status)
         {
             this.Message = message;
             this.State = status;
