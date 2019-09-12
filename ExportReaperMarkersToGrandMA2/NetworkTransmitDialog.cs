@@ -1,4 +1,4 @@
-﻿using FTP;
+﻿using SFTP;
 using Telnet;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace ExportReaperMarkersToGrandMA2
     {
         private Timecode Timecode;
         private TelnetInterface TelnetInterface;
-        private FTPClient FTPClient;
+        private FTPClient SFTPClient;
         private string[] Cmds;
         
 
@@ -53,8 +53,9 @@ namespace ExportReaperMarkersToGrandMA2
 
                     case 1: // Build timecode
 
-                        FTPClient = new FTPClient(txt_ip.Text, "data", "data", Timecode);
-                        FTPClient.Run();
+                        SFTPClient = new FTPClient(txt_ip.Text, "data", "data", Timecode);
+                        SFTPClient.OnConnectionChanged += OnFTPClientConnectionChange;
+                        await SFTPClient.Connect();
                         
                         /*
                         Cmds = new string[3];
@@ -112,14 +113,26 @@ namespace ExportReaperMarkersToGrandMA2
                 }
                 
             }
+            catch (SFTPConnectionException eSFTP)
+            {
+                switch (eSFTP.State)
+                {
+                    case FTPConnectionStatus.Refused:
+                        ConsoleOutput("SFTP-Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
+                        MessageBox.Show("Die SFTP-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n" +
+                            "Folgende Punkte müssen beachtet werden:\n\n" +
+                            "- Dieser PC muss mit dem MA-Net verbunden sein und mit ihm kommunizieren können. " +
+                            "Mehr dazu unter 'Networking' des GrandMA2 User-Manuals. \n", "Fehler beim verbinden zur GrandMA2-Konsole!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
 
         }
-
-        private void Telnet_OnConnectionChange(object sender, TelnetConnectEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         private void txt_ip_Leave(object sender, EventArgs e)
         {
             IPAddress address;
@@ -194,6 +207,70 @@ namespace ExportReaperMarkersToGrandMA2
                     break;
             }
 
+        }
+
+        private void OnFTPClientConnectionChange(object sender, FTPClientConnectionEventArgs e)
+        {
+            switch (e.State)
+            {
+                case FTPConnectionStatus.Connecting:
+                    ConsoleOutput("Verbindung nach " + txt_ip.Text + " wird aufgebaut... Bitte warten...\n", Color.Black, FontStyle.Bold);
+                    progressBar1.Style = ProgressBarStyle.Marquee;
+                    progressBar1.Value = 0;
+                    btn_send.Enabled = false;
+                    txt_ip.Enabled = false;
+                    txt_password.Enabled = false;
+                    txt_username.Enabled = false;
+                    break;
+
+                case FTPConnectionStatus.Connected:
+
+                    progressBar1.Style = ProgressBarStyle.Continuous;
+                    progressBar1.Minimum = 0;
+                    progressBar1.Maximum = 1;
+                    progressBar1.Step = 1;
+                    progressBar1.Value = 0;
+
+                    
+                    SFTPClient.OnProgressChanged += new EventHandler<FTPClientProgressEventArgs>(this.OnFTPClientProgressChange);
+                    
+                    SFTPClient.Run();
+
+                    btn_send.Enabled = true;
+                    txt_ip.Enabled = true;
+                    txt_password.Enabled = true;
+                    txt_username.Enabled = true;
+                    break;
+                case FTPConnectionStatus.Timeout:
+                    progressBar1.Style = ProgressBarStyle.Continuous;
+                    progressBar1.Value = 0;
+                    btn_send.Enabled = true;
+                    txt_ip.Enabled = true;
+                    txt_password.Enabled = true;
+                    txt_username.Enabled = true;
+                    break;
+            }
+        }
+
+        private void OnFTPClientProgressChange(object sender, FTPClientProgressEventArgs e)
+        {
+            switch (e.State)
+            {
+                case FTPProgressStatus.Uploading:
+                    ConsoleOutput("Die Datei wird hochgeladen... Bitte warten...\n", Color.Black, FontStyle.Bold);
+                    break;
+
+                case FTPProgressStatus.Uploaded:
+                    ConsoleOutput("Die Datei wurde erfolgreich hochgeladen!\n", Color.Green, FontStyle.Bold);
+                    break;
+
+                case FTPProgressStatus.Refused:
+                    ConsoleOutput("Die Datei konnte nicht hochgeladen werden!\n", Color.Red, FontStyle.Bold);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         private void ConsoleOutput(string text)
