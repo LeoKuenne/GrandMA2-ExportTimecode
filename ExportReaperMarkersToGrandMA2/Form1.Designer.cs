@@ -520,7 +520,7 @@
             // 
             this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 16);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
             this.helpToolStripMenuItem.Text = "Hilfe";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
@@ -530,7 +530,7 @@
             this.networkuploadToolStripMenuItem});
             this.extensionsToolStripMenuItem.Enabled = false;
             this.extensionsToolStripMenuItem.Name = "extensionsToolStripMenuItem";
-            this.extensionsToolStripMenuItem.Size = new System.Drawing.Size(95, 16);
+            this.extensionsToolStripMenuItem.Size = new System.Drawing.Size(95, 23);
             this.extensionsToolStripMenuItem.Text = "Erweiterungen";
             // 
             // networkuploadToolStripMenuItem
