@@ -46,7 +46,7 @@ namespace ExportReaperMarkersToGrandMA2
                 richTextBox1.Text = Changelog;
                 button1.Enabled = true;
             }
-            else if(float.Parse(response[1]) == float.Parse(Program.version))
+            else if(float.Parse(response[1]) <= float.Parse(Program.version))
             {
                 lblInfo.Text = "Sie benutzen die aktuellste Verison!";
             }
