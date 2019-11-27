@@ -17,7 +17,7 @@ namespace ExportReaperMarkersToGrandMA2
     {
         private Timecode Timecode;
         private TelnetInterface TelnetInterface;
-        private FTPClient SFTPClient;
+        private SFTPClient SFTPClient;
         private string[] Cmds;
         
 
@@ -53,7 +53,7 @@ namespace ExportReaperMarkersToGrandMA2
 
                     case 1: // Build timecode
 
-                        SFTPClient = new FTPClient(txt_ip.Text, "data", "data", Timecode);
+                        SFTPClient = new SFTPClient(txt_ip.Text, "data", "data", Timecode);
                         SFTPClient.OnConnectionChanged += OnFTPClientConnectionChange;
                         await SFTPClient.Connect();
                         
@@ -71,7 +71,7 @@ namespace ExportReaperMarkersToGrandMA2
 
                     case 2: // Build seq + timecode
 
-                        SFTPClient = new FTPClient(txt_ip.Text, "data", "data", Timecode);
+                        SFTPClient = new SFTPClient(txt_ip.Text, "data", "data", Timecode);
                         SFTPClient.OnConnectionChanged += OnFTPClientConnectionChange;
                         await SFTPClient.Connect();
                         
@@ -140,7 +140,23 @@ namespace ExportReaperMarkersToGrandMA2
                             "Mehr dazu unter 'Networking' des GrandMA2 User-Manuals. \n", "Fehler beim verbinden zur GrandMA2-Konsole!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
 
+                    case SFTPConnectionStatus.Timeout:
+                        ConsoleOutput("SFTP-Verbindung nicht möglich! Zeitüberschreitung\n", Color.Red, FontStyle.Bold);
+                        MessageBox.Show("Die SFTP-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n" +
+                            "Folgende Punkte müssen beachtet werden:\n\n" +
+                            "- Dieser PC muss mit dem MA-Net verbunden sein und mit ihm kommunizieren können. " +
+                            "Mehr dazu unter 'Networking' des GrandMA2 User-Manuals. \n", "Fehler beim verbinden zur GrandMA2-Konsole! Zeitüberschreitung", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+
+                    case SFTPConnectionStatus.Refused_CredentialsWrong:
+                        ConsoleOutput("SFTP-Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
+                        MessageBox.Show("Die SFTP-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n" +
+                            "Der Benutzername oder das Passwort ist nicht korrekt!", "Fehler beim verbinden zur GrandMA2-Konsole!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+
+
                     default:
+                        ConsoleOutput("SFTP-Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
                         break;
                 }
 

@@ -16,11 +16,13 @@ namespace SFTP
 {
     public enum SFTPConnectionStatus
     {
+        Undefinded = 0,
         Connecting = 1,
         Connected = 2,
         Refused = 3,
         Timeout = 4,
-        Disconnected = 5
+        Disconnected = 5,
+        Refused_CredentialsWrong = 6
     }
     
     public enum SFTPProgressStatus
@@ -32,7 +34,7 @@ namespace SFTP
 
     
 
-    public class FTPClient
+    public class SFTPClient
     {
         
         private string Host;
@@ -48,7 +50,7 @@ namespace SFTP
         public event EventHandler<FTPClientConnectionEventArgs> OnConnectionChanged;
         public event EventHandler<FTPClientProgressEventArgs> OnProgressChanged;
 
-        public FTPClient(string host, string username, string password, Timecode timecode)
+        public SFTPClient(string host, string username, string password, Timecode timecode)
         {
             this.Host = host;
             this.Username = username;
@@ -61,7 +63,9 @@ namespace SFTP
             {
                 OnConnectionChanged(this, new FTPClientConnectionEventArgs("", SFTPConnectionStatus.Connecting));
 
-                client = new SftpClient(Host, Username, Password);
+                ConnectionInfo info = new ConnectionInfo(this.Host, "sftp", new PasswordAuthenticationMethod(this.Username, this.Password));
+
+                client = new SftpClient(info);
                 
                 client.ErrorOccurred += Client_ErrorOccurred;
                 client.HostKeyReceived += Client_HostKeyReceived;
@@ -80,6 +84,16 @@ namespace SFTP
                 OnConnectionChanged(this, new FTPClientConnectionEventArgs("", SFTPConnectionStatus.Refused));
                 throw new SFTPConnectionException(SFTPConnectionStatus.Timeout);
             }
+            catch (SshAuthenticationException)
+            {
+                OnConnectionChanged(this, new FTPClientConnectionEventArgs("", SFTPConnectionStatus.Refused));
+                throw new SFTPConnectionException(SFTPConnectionStatus.Refused_CredentialsWrong);
+            }
+            catch (SshException)
+            {
+                OnConnectionChanged(this, new FTPClientConnectionEventArgs("", SFTPConnectionStatus.Undefinded));
+                throw new SFTPConnectionException(SFTPConnectionStatus.Undefinded);
+            }
 
         }
 
@@ -90,7 +104,7 @@ namespace SFTP
                 {
                     client.Connect();
                 }
-                catch (SocketException ex)
+                catch (Exception ex)
                 {
                     exception = ex;
                 }
@@ -104,12 +118,12 @@ namespace SFTP
             stream.BaseStream.Flush();
                 
             client.BufferSize = 4 * 1024;
-            client.ChangeDirectory("/actual/gma2/importexport");
+            //client.ChangeDirectory("/actual/gma2/importexport");
 
 
             OnProgressChanged(this, new FTPClientProgressEventArgs("", SFTPProgressStatus.Uploading));
 
-            client.UploadFile(stream.BaseStream, Timecode.GetTcName() + ".xml", true, new Action<ulong>(callback));
+            client.UploadFile(stream.BaseStream, Timecode.GetTcName() + ".xml", true);
 
             Thread.Sleep(1000);
 
