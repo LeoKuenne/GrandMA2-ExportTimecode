@@ -100,7 +100,16 @@ namespace ExportReaperMarkersToGrandMA2
             nodeEvent_Index.Value = Index.ToString();
 
             XmlAttribute nodeEvent_Time = doc.CreateAttribute("time");
-            nodeEvent_Time.Value = Time.ToString();
+
+            if (FrameRate == 25)
+            {
+
+                SetFps(30);
+                nodeEvent_Time.Value = Time.ToString();
+                SetFps(25);
+            }else
+                nodeEvent_Time.Value = Time.ToString();
+
 
             XmlAttribute nodeEvent_Step = doc.CreateAttribute("step");
             nodeEvent_Step.Value = (Index+1).ToString();
