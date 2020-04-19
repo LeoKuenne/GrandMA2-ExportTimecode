@@ -21,7 +21,7 @@ Alternativ gibt es mit der neuen Version 1.4 auch die Möglichkeit, seine Sequen
 Es ist geplant, dass man zudem auch noch übers Netzwerk das Timecode-Poolitem erstellen kann.
 
 ## Wie bekomm ich das Tool?
-In dem Ordner ExportReaperMarkersToGrandMA2/bin/Release/ die Datei [ExportReaperMarkersToGrandMA2.exe](ExportReaperMarkersToGrandMA2/bin/Release/ExportReaperMarkersToGrandMA2.exe) runterladen und ausführen!
+Du kannst das Tool unter http://www.download.lightemotions.net/ runterladen und installieren!
 
 ## Bei Fragen?
 Bei Fragen gerne einfach an lk@lightemotions.net wenden und ich werde gerne weiterhelfen!
