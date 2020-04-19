@@ -22,15 +22,15 @@ namespace SFTP
         }
 
         public SFTPConnectionException(string message) : base(message)
-    {
+        {
         }
 
         public SFTPConnectionException(string message, Exception innerException) : base(message, innerException)
-    {
+        {
         }
 
         protected SFTPConnectionException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
+        {
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -8,79 +9,76 @@ using System.Xml;
 
 namespace ExportReaperMarkersToGrandMA2
 {
+    
+    public enum TimecodeEventTrigger
+    {
+        Go,
+        Goto
+    }
+
     public class TimecodeEvent
     {
+
+        [Browsable(false)]
+        public TimelineFormat TimelineFormat { get; set; }
+
         public string Name { get; set; }
-        public int Time { get; set; }
-        public string[] Times { get; set; }
+        public Timestamp Time { get; set; }
+        //// Die Times Variable enthält den Originalen Zeitpunkt der eingelesen wird. Sobald die Framerate angepasst wird, wird anhand der Originaldaten der neue Framezeitpunkt des Events berechnet. Der Zeitpunkt des Events verschiebt sich nicht!
+        //public string[] Times { get; set; }
         public int Seq { get; set; }
         public int Cue { get; set; }
         public int Index { get; set; }
-        public string Trigger { get; set; }
+        public TimecodeEventTrigger trigger { get; set; }
 
-        private int FrameRate;
+        private FPS FrameRate;
 
 
         public TimecodeEvent() { }
 
-        public TimecodeEvent(int index, int seqitem, int cue, int time, string name, int fps, string trigger)
+        public TimecodeEvent(int index, int seqitem, int cue, string name, int fps, TimecodeEventTrigger trigger)
         {
             this.Name = name;
-            this.Time = time;
             this.Seq = seqitem;
             this.Cue = cue;
             this.Index = index;
-            this.Trigger = trigger;
+            this.trigger = trigger;
         }
 
-        public static TimecodeEvent ParseCSV(int index, string values, string[] names, int page, int seq, int fps, string defaulttrigger)
+        public static TimecodeEvent ParseCSV(int index, string valuesText, string[] names, TimelineFormat timelineFormat, int page, int seq, FPS fps, TimecodeEventTrigger defaulttrigger)
         {
             
-            string[] Values = values.Split(',');
-            int PosName = Array.IndexOf(names, "Name");
-            int PosTime = Array.IndexOf(names, "Start");
-            int PosCount = Array.IndexOf(names, "#");
+            string[] values = valuesText.Split(',');
+            int posName = Array.IndexOf(names, "Name");
+            int posTime = Array.IndexOf(names, "Start");
+            int posCount = Array.IndexOf(names, "#");
             
-            //HH:MM:SS:FF
-            string[] Times = Values[PosTime].Split(':');
-            int Frames = int.Parse(Times[3]);
-            int Seconds = int.Parse(Times[2]) * fps;
-            int Minutes = int.Parse(Times[1]) * fps * 60;
-            int Hours = int.Parse(Times[0]) * fps * 60 * 60;
-            int Time = Frames + Seconds + Minutes + Hours;
-
             TimecodeEvent e = new TimecodeEvent();
-            e.Time = Time;
-            e.Times = Times;
-            e.Name = Values[PosName];
+            e.TimelineFormat = timelineFormat;
+            e.Time = Timestamp.parseTimestamp(values[posTime], timelineFormat, fps);
+            e.Name = values[posName];
             e.Seq = seq;
-            e.Cue = int.Parse(Values[PosCount].Substring(1));
+            e.Cue = int.Parse(values[posCount].Substring(1));
             e.Index = index;
-            e.SetFps(fps);
-            e.Trigger = defaulttrigger;
+            e.FrameRate = fps;
+            e.trigger = defaulttrigger;
             
             return e;
         }
 
-        public int GetFps()
+        public FPS GetFps()
         {
             return FrameRate;
         }
 
-        public void SetFps(int value)
+        public void SetFps(FPS value)
         {
             FrameRate = value;
-            int Frames = int.Parse(Times[3]);
-            int Seconds = int.Parse(Times[2]) * FrameRate;
-            int Minutes = int.Parse(Times[1]) * FrameRate * 60;
-            int Hours = int.Parse(Times[0]) * FrameRate * 60 * 60;
-            Time = Frames + Seconds + Minutes + Hours;
         }
-
-
+        
         public override String ToString()
         {
-            return Name + ";" + Time + ";" + Cue;
+            return Name + ";" + Time.ToString() + ";" + Cue;
         }
 
         private int DateTimeToFrames(DateTime time)
@@ -100,22 +98,14 @@ namespace ExportReaperMarkersToGrandMA2
             nodeEvent_Index.Value = Index.ToString();
 
             XmlAttribute nodeEvent_Time = doc.CreateAttribute("time");
-
-            if (FrameRate == 25)
-            {
-
-                SetFps(30);
-                nodeEvent_Time.Value = Time.ToString();
-                SetFps(25);
-            }else
-                nodeEvent_Time.Value = Time.ToString();
+            nodeEvent_Time.Value = Time.GetFrameWithFPS((FPS)30).ToString();
 
 
             XmlAttribute nodeEvent_Step = doc.CreateAttribute("step");
             nodeEvent_Step.Value = (Index+1).ToString();
 
             XmlAttribute nodeEvent_Command = doc.CreateAttribute("command");
-            nodeEvent_Command.Value = Trigger;
+            nodeEvent_Command.Value = trigger.ToString();
 
             XmlAttribute nodeEvent_Pressed = doc.CreateAttribute("pressed");
             nodeEvent_Pressed.Value = "true";

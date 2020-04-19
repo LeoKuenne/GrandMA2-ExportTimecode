@@ -1,4 +1,6 @@
-﻿namespace ExportReaperMarkersToGrandMA2
+﻿using System;
+
+namespace ExportReaperMarkersToGrandMA2
 {
     partial class Form1
     {
@@ -28,6 +30,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.gB_Open = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel_Open = new System.Windows.Forms.TableLayoutPanel();
             this.txt_Open = new System.Windows.Forms.TextBox();
@@ -41,9 +45,9 @@
             this.num_ExecPage = new System.Windows.Forms.NumericUpDown();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.gB_TimecodeItem = new System.Windows.Forms.GroupBox();
+            this.cB_TcFrameRate = new System.Windows.Forms.ComboBox();
             this.cB_TcDefaultTrigger = new System.Windows.Forms.ComboBox();
             this.lbl_TcDefaultTrigger = new System.Windows.Forms.Label();
-            this.num_TcFrameRate = new System.Windows.Forms.NumericUpDown();
             this.lbl_TcFrameRate = new System.Windows.Forms.Label();
             this.txt_TcName = new System.Windows.Forms.TextBox();
             this.lbl_TcName = new System.Windows.Forms.Label();
@@ -64,6 +68,9 @@
             this.extensionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.networkuploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripTimeHeader = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.hoursMinutesSecondsMillisecondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.totalFramesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gB_Open.SuspendLayout();
             this.tableLayoutPanel_Open.SuspendLayout();
             this.gB_Timecode.SuspendLayout();
@@ -73,7 +80,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_ExecPage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.gB_TimecodeItem.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_TcFrameRate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_TcItem)).BeginInit();
             this.gB_Seq.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.num_SeqItem)).BeginInit();
@@ -81,6 +87,7 @@
             this.tableLayoutPanel_Save.SuspendLayout();
             this.tableLayoutPanel_Main.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.contextMenuStripTimeHeader.SuspendLayout();
             this.SuspendLayout();
             // 
             // gB_Open
@@ -90,7 +97,7 @@
             this.gB_Open.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gB_Open.Location = new System.Drawing.Point(3, 28);
             this.gB_Open.Name = "gB_Open";
-            this.gB_Open.Size = new System.Drawing.Size(762, 44);
+            this.gB_Open.Size = new System.Drawing.Size(834, 44);
             this.gB_Open.TabIndex = 0;
             this.gB_Open.TabStop = false;
             this.gB_Open.Text = "Reaper Marker File auswählen";
@@ -108,7 +115,7 @@
             this.tableLayoutPanel_Open.Name = "tableLayoutPanel_Open";
             this.tableLayoutPanel_Open.RowCount = 1;
             this.tableLayoutPanel_Open.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel_Open.Size = new System.Drawing.Size(756, 25);
+            this.tableLayoutPanel_Open.Size = new System.Drawing.Size(828, 25);
             this.tableLayoutPanel_Open.TabIndex = 4;
             // 
             // txt_Open
@@ -117,13 +124,13 @@
             this.txt_Open.Location = new System.Drawing.Point(0, 2);
             this.txt_Open.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.txt_Open.Name = "txt_Open";
-            this.txt_Open.Size = new System.Drawing.Size(681, 20);
+            this.txt_Open.Size = new System.Drawing.Size(753, 20);
             this.txt_Open.TabIndex = 0;
             // 
             // btn_Open
             // 
             this.btn_Open.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_Open.Location = new System.Drawing.Point(681, 0);
+            this.btn_Open.Location = new System.Drawing.Point(753, 0);
             this.btn_Open.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Open.Name = "btn_Open";
             this.btn_Open.Size = new System.Drawing.Size(75, 25);
@@ -138,7 +145,7 @@
             this.gB_Timecode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gB_Timecode.Location = new System.Drawing.Point(3, 78);
             this.gB_Timecode.Name = "gB_Timecode";
-            this.gB_Timecode.Size = new System.Drawing.Size(762, 222);
+            this.gB_Timecode.Size = new System.Drawing.Size(834, 313);
             this.gB_Timecode.TabIndex = 1;
             this.gB_Timecode.TabStop = false;
             this.gB_Timecode.Text = "Timecode Pool Item konfigurieren";
@@ -160,7 +167,7 @@
             this.tableLayoutPanel_Timecode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel_Timecode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel_Timecode.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel_Timecode.Size = new System.Drawing.Size(756, 203);
+            this.tableLayoutPanel_Timecode.Size = new System.Drawing.Size(828, 294);
             this.tableLayoutPanel_Timecode.TabIndex = 0;
             // 
             // gB_Exec
@@ -171,9 +178,9 @@
             this.gB_Exec.Controls.Add(this.lbl_ExecPage);
             this.gB_Exec.Controls.Add(this.num_ExecPage);
             this.gB_Exec.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gB_Exec.Location = new System.Drawing.Point(339, 70);
+            this.gB_Exec.Location = new System.Drawing.Point(389, 101);
             this.gB_Exec.Name = "gB_Exec";
-            this.gB_Exec.Size = new System.Drawing.Size(414, 61);
+            this.gB_Exec.Size = new System.Drawing.Size(436, 92);
             this.gB_Exec.TabIndex = 9;
             this.gB_Exec.TabStop = false;
             this.gB_Exec.Text = "Wähle den Executor der Timecode Spur";
@@ -181,6 +188,11 @@
             // num_ExecItem
             // 
             this.num_ExecItem.Location = new System.Drawing.Point(166, 15);
+            this.num_ExecItem.Maximum = new decimal(new int[] {
+            250,
+            0,
+            0,
+            0});
             this.num_ExecItem.Minimum = new decimal(new int[] {
             1,
             0,
@@ -236,9 +248,8 @@
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
@@ -247,78 +258,57 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.tableLayoutPanel_Timecode.SetRowSpan(this.dataGridView1, 3);
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(330, 197);
+            this.dataGridView1.Size = new System.Drawing.Size(380, 288);
             this.dataGridView1.TabIndex = 8;
-            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
+            this.dataGridView1.CellParsing += new System.Windows.Forms.DataGridViewCellParsingEventHandler(this.dataGridView1_CellParsing);
+            this.dataGridView1.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
+            this.dataGridView1.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_ColumnHeaderMouseClick);
+            this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
             // 
             // gB_TimecodeItem
             // 
             this.gB_TimecodeItem.AutoSize = true;
+            this.gB_TimecodeItem.Controls.Add(this.cB_TcFrameRate);
             this.gB_TimecodeItem.Controls.Add(this.cB_TcDefaultTrigger);
             this.gB_TimecodeItem.Controls.Add(this.lbl_TcDefaultTrigger);
-            this.gB_TimecodeItem.Controls.Add(this.num_TcFrameRate);
             this.gB_TimecodeItem.Controls.Add(this.lbl_TcFrameRate);
             this.gB_TimecodeItem.Controls.Add(this.txt_TcName);
             this.gB_TimecodeItem.Controls.Add(this.lbl_TcName);
             this.gB_TimecodeItem.Controls.Add(this.num_TcItem);
             this.gB_TimecodeItem.Controls.Add(this.lbl_TcItem);
             this.gB_TimecodeItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gB_TimecodeItem.Location = new System.Drawing.Point(339, 137);
+            this.gB_TimecodeItem.Location = new System.Drawing.Point(389, 199);
             this.gB_TimecodeItem.Name = "gB_TimecodeItem";
-            this.gB_TimecodeItem.Size = new System.Drawing.Size(414, 63);
+            this.gB_TimecodeItem.Size = new System.Drawing.Size(436, 92);
             this.gB_TimecodeItem.TabIndex = 7;
             this.gB_TimecodeItem.TabStop = false;
             this.gB_TimecodeItem.Text = "Wähle das Timecode Pool Item:";
             // 
+            // cB_TcFrameRate
+            // 
+            this.cB_TcFrameRate.FormattingEnabled = true;
+            this.cB_TcFrameRate.Location = new System.Drawing.Point(196, 13);
+            this.cB_TcFrameRate.Name = "cB_TcFrameRate";
+            this.cB_TcFrameRate.Size = new System.Drawing.Size(69, 21);
+            this.cB_TcFrameRate.TabIndex = 17;
+            // 
             // cB_TcDefaultTrigger
             // 
             this.cB_TcDefaultTrigger.FormattingEnabled = true;
-            this.cB_TcDefaultTrigger.Items.AddRange(new object[] {
-            "Goto",
-            "Go"});
-            this.cB_TcDefaultTrigger.Location = new System.Drawing.Point(338, 13);
+            this.cB_TcDefaultTrigger.Location = new System.Drawing.Point(360, 16);
             this.cB_TcDefaultTrigger.Name = "cB_TcDefaultTrigger";
             this.cB_TcDefaultTrigger.Size = new System.Drawing.Size(70, 21);
             this.cB_TcDefaultTrigger.TabIndex = 16;
             this.cB_TcDefaultTrigger.Text = "Go";
-            this.cB_TcDefaultTrigger.SelectedIndexChanged += new System.EventHandler(this.cB_TcDefaultTrigger_SelectedIndexChanged);
             // 
             // lbl_TcDefaultTrigger
             // 
             this.lbl_TcDefaultTrigger.AutoSize = true;
-            this.lbl_TcDefaultTrigger.Location = new System.Drawing.Point(252, 16);
+            this.lbl_TcDefaultTrigger.Location = new System.Drawing.Point(271, 16);
             this.lbl_TcDefaultTrigger.Name = "lbl_TcDefaultTrigger";
             this.lbl_TcDefaultTrigger.Size = new System.Drawing.Size(80, 13);
             this.lbl_TcDefaultTrigger.TabIndex = 14;
             this.lbl_TcDefaultTrigger.Text = "Default Trigger:";
-            // 
-            // num_TcFrameRate
-            // 
-            this.num_TcFrameRate.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.num_TcFrameRate.Location = new System.Drawing.Point(196, 14);
-            this.num_TcFrameRate.Maximum = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            this.num_TcFrameRate.Minimum = new decimal(new int[] {
-            25,
-            0,
-            0,
-            0});
-            this.num_TcFrameRate.Name = "num_TcFrameRate";
-            this.num_TcFrameRate.Size = new System.Drawing.Size(50, 20);
-            this.num_TcFrameRate.TabIndex = 15;
-            this.num_TcFrameRate.Value = new decimal(new int[] {
-            25,
-            0,
-            0,
-            0});
-            this.num_TcFrameRate.ValueChanged += new System.EventHandler(this.num_TcFrameRate_ValueChanged);
             // 
             // lbl_TcFrameRate
             // 
@@ -333,7 +323,7 @@
             // 
             this.txt_TcName.Location = new System.Drawing.Point(50, 41);
             this.txt_TcName.Name = "txt_TcName";
-            this.txt_TcName.Size = new System.Drawing.Size(358, 20);
+            this.txt_TcName.Size = new System.Drawing.Size(380, 20);
             this.txt_TcName.TabIndex = 13;
             this.txt_TcName.Text = "Timecode 1";
             this.txt_TcName.TextChanged += new System.EventHandler(this.txt_TcName_TextChanged);
@@ -382,9 +372,9 @@
             this.gB_Seq.Controls.Add(this.num_SeqItem);
             this.gB_Seq.Controls.Add(this.lbl_SeqItem);
             this.gB_Seq.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gB_Seq.Location = new System.Drawing.Point(339, 3);
+            this.gB_Seq.Location = new System.Drawing.Point(389, 3);
             this.gB_Seq.Name = "gB_Seq";
-            this.gB_Seq.Size = new System.Drawing.Size(414, 61);
+            this.gB_Seq.Size = new System.Drawing.Size(436, 92);
             this.gB_Seq.TabIndex = 6;
             this.gB_Seq.TabStop = false;
             this.gB_Seq.Text = "Wähle die Sequenz der Timecode Spur:";
@@ -393,7 +383,7 @@
             // 
             this.txt_SeqName.Location = new System.Drawing.Point(50, 40);
             this.txt_SeqName.Name = "txt_SeqName";
-            this.txt_SeqName.Size = new System.Drawing.Size(358, 20);
+            this.txt_SeqName.Size = new System.Drawing.Size(380, 20);
             this.txt_SeqName.TabIndex = 11;
             this.txt_SeqName.Text = "Sequenze 1";
             this.txt_SeqName.TextChanged += new System.EventHandler(this.txt_SeqName_TextChanged);
@@ -410,6 +400,11 @@
             // num_SeqItem
             // 
             this.num_SeqItem.Location = new System.Drawing.Point(66, 14);
+            this.num_SeqItem.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
             this.num_SeqItem.Minimum = new decimal(new int[] {
             1,
             0,
@@ -439,9 +434,9 @@
             this.gB_Save.AutoSize = true;
             this.gB_Save.Controls.Add(this.tableLayoutPanel_Save);
             this.gB_Save.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gB_Save.Location = new System.Drawing.Point(3, 306);
+            this.gB_Save.Location = new System.Drawing.Point(3, 397);
             this.gB_Save.Name = "gB_Save";
-            this.gB_Save.Size = new System.Drawing.Size(762, 44);
+            this.gB_Save.Size = new System.Drawing.Size(834, 44);
             this.gB_Save.TabIndex = 2;
             this.gB_Save.TabStop = false;
             this.gB_Save.Text = "GrandMA2 Ordner auswählen";
@@ -460,7 +455,7 @@
             this.tableLayoutPanel_Save.Name = "tableLayoutPanel_Save";
             this.tableLayoutPanel_Save.RowCount = 1;
             this.tableLayoutPanel_Save.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel_Save.Size = new System.Drawing.Size(756, 25);
+            this.tableLayoutPanel_Save.Size = new System.Drawing.Size(828, 25);
             this.tableLayoutPanel_Save.TabIndex = 5;
             // 
             // txt_Save
@@ -469,13 +464,13 @@
             this.txt_Save.Location = new System.Drawing.Point(0, 2);
             this.txt_Save.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.txt_Save.Name = "txt_Save";
-            this.txt_Save.Size = new System.Drawing.Size(681, 20);
+            this.txt_Save.Size = new System.Drawing.Size(753, 20);
             this.txt_Save.TabIndex = 0;
             // 
             // btn_Save
             // 
             this.btn_Save.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_Save.Location = new System.Drawing.Point(681, 0);
+            this.btn_Save.Location = new System.Drawing.Point(753, 0);
             this.btn_Save.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Save.Name = "btn_Save";
             this.btn_Save.Size = new System.Drawing.Size(75, 25);
@@ -501,7 +496,7 @@
             this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel_Main.Size = new System.Drawing.Size(768, 353);
+            this.tableLayoutPanel_Main.Size = new System.Drawing.Size(840, 444);
             this.tableLayoutPanel_Main.TabIndex = 3;
             // 
             // menuStrip1
@@ -514,7 +509,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 0);
-            this.menuStrip1.Size = new System.Drawing.Size(768, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(840, 25);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -546,17 +541,45 @@
             // updatesToolStripMenuItem
             // 
             this.updatesToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.updatesToolStripMenuItem.Enabled = false;
             this.updatesToolStripMenuItem.Name = "updatesToolStripMenuItem";
             this.updatesToolStripMenuItem.Size = new System.Drawing.Size(62, 23);
             this.updatesToolStripMenuItem.Text = "Updates";
+            this.updatesToolStripMenuItem.Visible = false;
             this.updatesToolStripMenuItem.Click += new System.EventHandler(this.updatesToolStripMenuItem_Click);
+            // 
+            // contextMenuStripTimeHeader
+            // 
+            this.contextMenuStripTimeHeader.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hoursMinutesSecondsMillisecondsToolStripMenuItem,
+            this.totalFramesToolStripMenuItem});
+            this.contextMenuStripTimeHeader.Name = "contextMenuStripTimeHeader";
+            this.contextMenuStripTimeHeader.Size = new System.Drawing.Size(269, 48);
+            // 
+            // hoursMinutesSecondsMillisecondsToolStripMenuItem
+            // 
+            this.hoursMinutesSecondsMillisecondsToolStripMenuItem.Checked = true;
+            this.hoursMinutesSecondsMillisecondsToolStripMenuItem.CheckOnClick = true;
+            this.hoursMinutesSecondsMillisecondsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.hoursMinutesSecondsMillisecondsToolStripMenuItem.Name = "hoursMinutesSecondsMillisecondsToolStripMenuItem";
+            this.hoursMinutesSecondsMillisecondsToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
+            this.hoursMinutesSecondsMillisecondsToolStripMenuItem.Text = "Hours:Minutes:Seconds:Milliseconds";
+            this.hoursMinutesSecondsMillisecondsToolStripMenuItem.Click += new System.EventHandler(this.hoursMinutesSecondsMillisecondsToolStripMenuItem_Click);
+            // 
+            // totalFramesToolStripMenuItem
+            // 
+            this.totalFramesToolStripMenuItem.Name = "totalFramesToolStripMenuItem";
+            this.totalFramesToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
+            this.totalFramesToolStripMenuItem.Text = "Total Frames";
+            this.totalFramesToolStripMenuItem.Click += new System.EventHandler(this.totalFramesToolStripMenuItem_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(768, 353);
+            this.ClientSize = new System.Drawing.Size(840, 444);
             this.Controls.Add(this.tableLayoutPanel_Main);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(595, 392);
             this.Name = "Form1";
@@ -575,7 +598,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.gB_TimecodeItem.ResumeLayout(false);
             this.gB_TimecodeItem.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.num_TcFrameRate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_TcItem)).EndInit();
             this.gB_Seq.ResumeLayout(false);
             this.gB_Seq.PerformLayout();
@@ -588,6 +610,7 @@
             this.tableLayoutPanel_Main.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.contextMenuStripTimeHeader.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -613,7 +636,6 @@
         private System.Windows.Forms.NumericUpDown num_SeqItem;
         private System.Windows.Forms.Label lbl_SeqItem;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.NumericUpDown num_TcFrameRate;
         private System.Windows.Forms.Label lbl_TcFrameRate;
         private System.Windows.Forms.GroupBox gB_Exec;
         private System.Windows.Forms.NumericUpDown num_ExecItem;
@@ -631,6 +653,10 @@
         private System.Windows.Forms.ToolStripMenuItem extensionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem networkuploadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updatesToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripTimeHeader;
+        private System.Windows.Forms.ToolStripMenuItem hoursMinutesSecondsMillisecondsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem totalFramesToolStripMenuItem;
+        private System.Windows.Forms.ComboBox cB_TcFrameRate;
     }
 }
 

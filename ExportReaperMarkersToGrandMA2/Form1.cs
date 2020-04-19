@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -13,15 +14,24 @@ using static System.Environment;
 
 namespace ExportReaperMarkersToGrandMA2
 {
+
     public partial class Form1 : Form
     {
+
         Timecode timecode;
 
         public Form1()
         {
+
             InitializeComponent();
 
-            this.Text = "GrandMA2-ExportTimecode | Version:" + Program.version;
+            this.cB_TcDefaultTrigger.DataSource = Enum.GetValues(typeof(TimecodeEventTrigger));
+            this.cB_TcDefaultTrigger.SelectedIndexChanged += new System.EventHandler(this.cB_TcDefaultTrigger_SelectedIndexChanged);
+
+            this.cB_TcFrameRate.DataSource = Enum.GetValues(typeof(FPS));
+            this.cB_TcFrameRate.SelectedIndexChanged += new System.EventHandler(this.cB_TcFrameRate_SelectedIndexChanged);
+
+            this.Text = "GrandMA2-ExportTimecode | Version:" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         private void btn_Open_Click(object sender, EventArgs e)
@@ -30,6 +40,7 @@ namespace ExportReaperMarkersToGrandMA2
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "CSV-Files(*.csv) | *.csv";
             openFileDialog.FilterIndex = 0;
+
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 defaultPath = openFileDialog.FileName;
@@ -43,19 +54,58 @@ namespace ExportReaperMarkersToGrandMA2
                     temp = sr.ReadLine();
                 }
                 
-                timecode = new Timecode((int) num_ExecPage.Value, (int) num_ExecItem.Value, (int) num_SeqItem.Value, txt_SeqName.Text, (int) num_TcItem.Value, txt_TcName.Text, (int) num_TcFrameRate.Value, "Go");
-                if (!timecode.ParseCSV(csv.ToArray()))
+                if(csv.Count < 2)
                 {
                     MessageBox.Show("Die ausgewählte Datei entspricht nicht dem erwarteten Format!\n" +
-                        "Folgende Punkte müssen beachtet werden:\n\n" +
-                        "- Es muss eine von Reaper erstellte Datei ausgewählt werden\n" +
-                        "- Die Timeline muss auf dem Format:\n" +
-                        "\t 'Hours:Minutes:Seconds:Frames' \n" +
-                        "  stehen(Rechtsklick auf die Timeline)", "Fehler beim lesen der Datei!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        "Die Datei enthält keine Markerinformationen.",
+                        "Fehler beim lesen der Datei!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     sr.Close();
                     return;
                 }
 
+                TimelineFormat timelineFormat = TimelineFormat.HH_MM_SS_FF;
+                FPS baseFramerate = FPS.FPS25;
+
+                using (var form = new TimecodeEventTimelineForm(csv.ToArray()[1]))
+                {
+                    DialogResult result = form.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        timelineFormat = form.timelineFormat;
+                        baseFramerate = form.baseFramerate;
+
+                    }
+                    else if (result == DialogResult.Cancel)
+                    {
+                        sr.Close();
+                        return;
+                    }
+                }
+                                
+                timecode = new Timecode((int) num_ExecPage.Value, (int) num_ExecItem.Value, (int) num_SeqItem.Value, txt_SeqName.Text, (int) num_TcItem.Value, txt_TcName.Text, (FPS) cB_TcFrameRate.SelectedItem, timelineFormat, TimecodeEventTrigger.Go);
+
+                try
+                {
+                    timecode.ParseCSV(csv.ToArray(), baseFramerate);
+                }catch(TimelineFormatMatchException ex)
+                {
+                    MessageBox.Show("Die ausgewählte Datei entspricht nicht dem erwarteten Format!\n" +
+                        "Erwartetes Format: " + ex.Excepted + "\n" +
+                        "Gelesenes Format: " + ex.ActualTimeline,
+                        "Fehler beim lesen der Datei!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    sr.Close();
+                    return;
+                }catch(Exception ex)
+                {
+                    MessageBox.Show("Es ist ein Fehler aufgetreten beim lesen der Datei!\n" +
+                          ex.Message + "\n" + ex.StackTrace,
+                          "Fehler beim lesen der Datei!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    sr.Close();
+                    return;
+                }
+
+            
                 gB_Save.Visible = true;
                 gB_Timecode.Visible = true;
                 txt_Open.Text = defaultPath;
@@ -63,9 +113,20 @@ namespace ExportReaperMarkersToGrandMA2
                 extensionsToolStripMenuItem.Enabled = true;
                 networkuploadToolStripMenuItem.Enabled = true;
 
-                dataGridView1.DataSource = timecode.timecodeEvents.ToList();
+                dataGridView1.DataSource = timecode.TimecodeEvents.ToList();
                 dataGridView1.AllowUserToResizeColumns = true;
                 dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                
+                DataGridViewComboBoxColumn triggerColumn = new DataGridViewComboBoxColumn();
+                var triggerTypes = Enum.GetValues(typeof(TimecodeEventTrigger));
+                triggerColumn.DataSource = triggerTypes;
+                triggerColumn.HeaderText = "Trigger";
+                triggerColumn.DataPropertyName = "Trigger";
+
+                dataGridView1.Columns.RemoveAt(dataGridView1.Columns.Count-1);
+                dataGridView1.Columns.Add(triggerColumn);
+
+                timelineFormat = TimelineFormat.HH_MM_SS_FF;
                 
                 sr.Close();
             }
@@ -104,7 +165,7 @@ namespace ExportReaperMarkersToGrandMA2
         private void num_SeqItem_ValueChanged(object sender, EventArgs e)
         {
             timecode.SetSeq((int) num_SeqItem.Value);
-            dataGridView1.DataSource = timecode.timecodeEvents.ToList();
+            dataGridView1.DataSource = timecode.TimecodeEvents.ToList();
         }
 
         private void txt_SeqName_TextChanged(object sender, EventArgs e)
@@ -127,10 +188,10 @@ namespace ExportReaperMarkersToGrandMA2
             timecode.SetTc((int) num_TcItem.Value);
         }
 
-        private void num_TcFrameRate_ValueChanged(object sender, EventArgs e)
+        private void cB_TcFrameRate_SelectedIndexChanged(object sender, EventArgs e)
         {
-            timecode.SetFrameRate((int) num_TcFrameRate.Value);
-            dataGridView1.DataSource = timecode.timecodeEvents.ToList();
+            timecode.SetFrameRate((FPS) cB_TcFrameRate.SelectedValue);
+            dataGridView1.Refresh();
         }
 
         private void txt_TcName_TextChanged(object sender, EventArgs e)
@@ -143,34 +204,17 @@ namespace ExportReaperMarkersToGrandMA2
             switch (cB_TcDefaultTrigger.SelectedIndex)
             {
                 case 0:
-                    timecode.SetDefaultTrigger("Goto");
-                    dataGridView1.DataSource = timecode.timecodeEvents.ToList();
+                    timecode.SetDefaultTrigger(TimecodeEventTrigger.Goto);
                     break;
                 case 1:
-                    timecode.SetDefaultTrigger("Go");
-                    dataGridView1.DataSource = timecode.timecodeEvents.ToList();
+                    timecode.SetDefaultTrigger(TimecodeEventTrigger.Go);
                     break;
                 default:break;
             }
+
+            dataGridView1.Refresh();
         }
         #endregion
-
-        private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
-        {
-            if (dataGridView1.SelectedCells[0].ColumnIndex == 1)
-            {
-                using (var form = new FormTime(timecode.timecodeEvents[dataGridView1.SelectedCells[0].RowIndex].Time, (int) num_TcFrameRate.Value))
-                {
-                    DialogResult result = form.ShowDialog();
-                    if (result == DialogResult.OK)
-                    {
-                        timecode.timecodeEvents[dataGridView1.SelectedCells[0].RowIndex].Time = form.time;
-                    }
-                }
-
-                dataGridView1.EndEdit();
-            }
-        }
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -188,6 +232,155 @@ namespace ExportReaperMarkersToGrandMA2
         {
             UpdateDialog updateDialog = new UpdateDialog();
             updateDialog.Show();
+        }
+        
+        private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            string name = (string)e.FormattedValue;
+            
+            switch (e.ColumnIndex)
+            {
+                case 0: //Cue Name
+
+                    if(!Regex.IsMatch(name, @"[^A-Za-z0-9\s]"))
+                    {
+                        e.Cancel = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Es dürfen keine Sonderzeichen verwendet werden!\n", "Fehler bei der Eingabe!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        e.Cancel = true;
+                    }
+
+                    break;
+
+                case 1:
+
+                    try
+                    {
+                        Timestamp.parseTimestamp(e.FormattedValue.ToString(), timecode.TimelineFormat, timecode.Framerate);
+                    }
+                    catch (TimelineFormatMatchException ex)
+                    {
+                        MessageBox.Show("Die Eingabe entspricht nicht dem Zeitformat!\n" +
+                            "Erwartetes Format: " + ex.Excepted + "\n", "Fehler bei der Eingabe!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        e.Cancel = true;
+                        break;
+                    }
+                    catch (Exception) { };
+
+                    e.Cancel = false;
+                    break;
+
+                case 2:
+                    if (!Regex.IsMatch(name, @"[^0-9]") && int.Parse(name) > 0 )
+                    {
+                        e.Cancel = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Es dürfen nur Ziffern verwendet werden! Der Wert muss größer als 0 sein.\n", "Fehler bei der Eingabe!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        e.Cancel = true;
+                    }
+                    break;
+
+                case 3:
+                    if (!Regex.IsMatch(name, @"[^0-9]") && int.Parse(name) > 0)
+                    {
+                        e.Cancel = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Es dürfen nur Ziffern verwendet werden! Der Wert muss größer als 0 sein.\n", "Fehler bei der Eingabe!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        e.Cancel = true;
+                    }
+                    break;
+
+                case 4:
+                    if (!Regex.IsMatch(name, @"[^0-9]"))
+                    {
+                        e.Cancel = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Es dürfen nur Ziffern verwendet werden!\n", "Fehler bei der Eingabe!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        e.Cancel = true;
+                    }
+                    break;
+
+                default:
+                    break;
+
+            }
+        }
+
+        
+        private void dataGridView1_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
+        {
+            switch (e.ColumnIndex)
+            {
+                case 1:
+
+                    try
+                    {
+                        e.Value = Timestamp.parseTimestamp(e.Value.ToString(), timecode.TimelineFormat, timecode.Framerate);
+                    }
+                    catch (TimelineFormatMatchException ex)
+                    {
+                        MessageBox.Show("Die Eingabe entspricht nicht dem Zeitformat!\n" +
+                            "Erwartetes Format: " + ex.Excepted + "\n", "Fehler bei der Eingabe!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        e.ParsingApplied = false;
+                        break;
+                    }
+                    catch (Exception) { };
+
+                    e.ParsingApplied = true;
+                    break;
+
+                default:
+                    break;
+
+            }
+        }
+
+
+        private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right && e.ColumnIndex == 1)
+                contextMenuStripTimeHeader.Show(dataGridView1, dataGridView1.PointToClient(Cursor.Position));
+        }
+
+        private void hoursMinutesSecondsMillisecondsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            foreach(TimecodeEvent timecodeEvent in timecode.TimecodeEvents)
+            {
+                timecodeEvent.Time.format = TimestampFormat.HH_MM_SS_ss;
+            }
+
+            hoursMinutesSecondsMillisecondsToolStripMenuItem.Checked = true;
+            totalFramesToolStripMenuItem.Checked = false;
+
+            dataGridView1.Refresh();
+        }
+
+        private void totalFramesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (TimecodeEvent timecodeEvent in timecode.TimecodeEvents)
+            {
+                timecodeEvent.Time.format = TimestampFormat.TotalFrames;
+            }
+
+            hoursMinutesSecondsMillisecondsToolStripMenuItem.Checked = false;
+            totalFramesToolStripMenuItem.Checked = true;
+
+            dataGridView1.Refresh();
+        }
+
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if(e.Context != DataGridViewDataErrorContexts.Parsing)
+                e.ThrowException = true;
         }
     }
 }

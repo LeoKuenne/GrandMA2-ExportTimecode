@@ -9,21 +9,37 @@ using System.Xml;
 
 namespace ExportReaperMarkersToGrandMA2
 {
+    public enum TimelineFormat
+    {
+        HH_MM_SS_FF = 0,
+        MM_SS = 1
+    }
+
+    public enum FPS
+    {
+        FPS30 = 30,
+        FPS25 = 25
+    }
+
     public class Timecode
     {
-        public TimecodeEvent[] timecodeEvents { get; set; }
-        
+        public static Timecode current;
+
+        public TimecodeEvent[] TimecodeEvents { get; set; }
+        public TimelineFormat TimelineFormat;
+        public FPS Framerate;
+
+
         private int page;
         private int exec;
         private int seq_item;
         private string seq_Name;
         private int tc_item;
         private string tc_name;
-        private int frameRate;
-        private string defaultTrigger;
+        private TimecodeEventTrigger defaultTrigger;
 
 
-        public Timecode(int page, int exec, int seq, string seqname, int tc, string tcname, int framerate, string defaultTrigger)
+        public Timecode(int page, int exec, int seq, string seqname, int tc, string tcname, FPS framerate, TimelineFormat timelineFormat, TimecodeEventTrigger defaultTrigger)
         {
             this.page = page;
             this.exec = exec;
@@ -31,29 +47,23 @@ namespace ExportReaperMarkersToGrandMA2
             this.seq_Name = seqname;
             this.tc_item = tc;
             this.tc_name = tcname;
-            this.frameRate = framerate;
+            this.Framerate = framerate;
             this.defaultTrigger = defaultTrigger;
+            this.TimelineFormat = timelineFormat;
+
+            current = this;
         }
 
-        public bool ParseCSV(string[] csvtext)
+        public void ParseCSV(string[] csvtext, FPS baseFramerate)
         {
             string[] names = csvtext[0].Split(',');
 
-            timecodeEvents = new TimecodeEvent[csvtext.Length-1];
+            TimecodeEvents = new TimecodeEvent[csvtext.Length-1];
 
-            try
+            for (int i = 0; i < csvtext.Length-1; i++)
             {
-                for (int i = 0; i < csvtext.Length-1; i++)
-                {
-                    timecodeEvents[i] = TimecodeEvent.ParseCSV(i, csvtext[i + 1], names, GetPage(), GetSeq(), GetFrameRate(), defaultTrigger);
-                }
+                TimecodeEvents[i] = TimecodeEvent.ParseCSV(i, csvtext[i + 1], names, TimelineFormat, GetPage(), GetSeq(), baseFramerate, defaultTrigger);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ein Fehler ist aufgetreten beim konvertieren von der Reaper CSV-Datei in ein internes Format:\n" + ex.ToString(), "Fehler beim konvertieren des Timecodes!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            return true;
         }
 
         public void saveTimecodeXMLToFile(String path)
@@ -177,7 +187,7 @@ namespace ExportReaperMarkersToGrandMA2
             nodeSubTrack.Attributes.Append(nodeSubTrackAttribute_Index);
             nodeTrack.AppendChild(nodeSubTrack);
 
-            foreach (TimecodeEvent t in timecodeEvents)
+            foreach (TimecodeEvent t in TimecodeEvents)
             {
                 t.writeXML(nodeSubTrack, xmlDoc);
             }
@@ -229,7 +239,7 @@ namespace ExportReaperMarkersToGrandMA2
             nodeMacro.Attributes.Append(nodeMacroAttrib_name);
             nodeMA.AppendChild(nodeMacro);
 
-            string[] macroLines = getMacroLines();
+            string[] macroLines = GetMacroLines();
             for (int i = 0; i < macroLines.Length; i++)
             {
                 addMacroLine(xmlDoc, nodeMacro, i+1, macroLines[i]);
@@ -252,13 +262,13 @@ namespace ExportReaperMarkersToGrandMA2
             parent.AppendChild(node);
         }
 
-        public string[] getMacroLines()
+        public string[] GetMacroLines()
         {
-            string[] macroLines = new string[this.timecodeEvents.Length + 7];
+            string[] macroLines = new string[this.TimecodeEvents.Length + 7];
 
             int index = 1;
 
-            foreach (TimecodeEvent e in this.timecodeEvents)
+            foreach (TimecodeEvent e in this.TimecodeEvents)
             {
                 macroLines[index++] = "Store Seq " + seq_item + " Cue " + e.Cue + " \"" + e.Name + "\" /o /nc";
             }
@@ -301,7 +311,7 @@ namespace ExportReaperMarkersToGrandMA2
         public void SetSeq(int value)
         {
             seq_item = value;
-            foreach(TimecodeEvent t in timecodeEvents)
+            foreach(TimecodeEvent t in TimecodeEvents)
             {
                 t.Seq = value;
             }
@@ -337,26 +347,26 @@ namespace ExportReaperMarkersToGrandMA2
             tc_name = value;
         }
 
-        public int GetFrameRate()
+        public FPS GetFrameRate()
         {
-            return frameRate;
+            return Framerate;
         }
 
-        public void SetFrameRate(int value)
+        public void SetFrameRate(FPS value)
         {
-            frameRate = value;
-            foreach (TimecodeEvent e in timecodeEvents) e.SetFps(value);
+            Framerate = value;
+            foreach (TimecodeEvent e in TimecodeEvents) e.SetFps(value);
         }
 
-        public string GetDefaultTrigger()
+        public TimecodeEventTrigger GetDefaultTrigger()
         {
             return defaultTrigger;
         }
 
-        public void SetDefaultTrigger(string value)
+        public void SetDefaultTrigger(TimecodeEventTrigger value)
         {
             defaultTrigger = value;
-            foreach (TimecodeEvent e in timecodeEvents) e.Trigger = value;
+            foreach (TimecodeEvent e in TimecodeEvents) e.trigger = value;
         }
     }
 }

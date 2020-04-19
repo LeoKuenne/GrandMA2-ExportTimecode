@@ -42,7 +42,7 @@ namespace ExportReaperMarkersToGrandMA2
                 switch (cB_Mode.SelectedIndex)
                 {
                     case 0: // Build seq
-                        Cmds = Timecode.getMacroLines();
+                        Cmds = Timecode.GetMacroLines();
                         
                         TelnetInterface = new TelnetInterface(txt_ip.Text, Cmds, txt_username.Text, txt_password.Text);
                         TelnetInterface.OnConnectionChange += new EventHandler<TelnetConnectEventArgs>(OnTelnetConnectionChange);
@@ -75,7 +75,7 @@ namespace ExportReaperMarkersToGrandMA2
                         SFTPClient.OnConnectionChanged += OnFTPClientConnectionChange;
                         await SFTPClient.Connect();
                         
-                        Cmds = Timecode.getMacroLines();
+                        Cmds = Timecode.GetMacroLines();
                         Cmds[Cmds.Length - 3] = "SelectDrive 1";
                         Cmds[Cmds.Length - 2] = "Import \"" + Timecode.GetTcName() + ".xml\" At Timecode " + Timecode.GetTc() + " /o";
                         Cmds[Cmds.Length - 1] = "Label Timecode " + Timecode.GetTc() + " \"" + Timecode.GetTcName() + "\" /o /nc";
@@ -103,13 +103,13 @@ namespace ExportReaperMarkersToGrandMA2
                 switch (eTel.State)
                 {
                     case TelnetConnectionStatus.Disabled:
-                        ConsoleOutput("Telnet Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
+                        ConsoleOutput("Telnet: Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
                         MessageBox.Show("Die Telnet-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n" +
                             "Die Telnet Schnittstelle ist inaktiv!\n\n" +
                             "- Setup -> Global Settings -> Telnet muss auf 'Login Enabled' stehen\n", "Fehler beim verbinden zur GrandMA2-Konsole!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                     case TelnetConnectionStatus.Timeout:
-                        ConsoleOutput("Telnet Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
+                        ConsoleOutput("Telnet: Verbindung nicht möglich!\n", Color.Red, FontStyle.Bold);
                         MessageBox.Show("Die Telnet-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n" +
                             "Folgende Punkte müssen beachtet werden:\n\n" +
                             "- Setup -> Global Settings -> Telnet muss auf 'Login Enabled' stehen\n" +
@@ -117,7 +117,7 @@ namespace ExportReaperMarkersToGrandMA2
                             "Mehr dazu unter 'Networking' des GrandMA2 User-Manuals. \n", "Fehler beim verbinden zur GrandMA2-Konsole!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                     case TelnetConnectionStatus.LoginNeeded:
-                        ConsoleOutput("Telnet Verbindung nicht möglich! Falsche Anmeldedaten!\n", Color.Red, FontStyle.Bold);
+                        ConsoleOutput("Telnet: Verbindung nicht möglich! Falsche Anmeldedaten!\n", Color.Red, FontStyle.Bold);
                         progressBar1.Value = 0;
                         MessageBox.Show("Die Telnet-Verbindung zur angegebenen GrandMA2-Konsole kann nicht hergestellt werden!\n\n" +
                             "Der angegebene Benutzername oder Passwort ist falsch. Bitte überprüfen Sie ihre Eingabe!", "Fehler beim verbinden zur GrandMA2-Konsole!", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -257,7 +257,7 @@ namespace ExportReaperMarkersToGrandMA2
             switch (e.State)
             {
                 case SFTPConnectionStatus.Connecting:
-                    ConsoleOutput("Verbindung nach " + txt_ip.Text + " wird aufgebaut... Bitte warten...\n", Color.Black, FontStyle.Bold);
+                    ConsoleOutput("FTP: Verbindung nach " + txt_ip.Text + " wird aufgebaut... Bitte warten...\n", Color.Black, FontStyle.Bold);
                     progressBar1.Style = ProgressBarStyle.Marquee;
                     progressBar1.Value = 0;
                     btn_send.Enabled = false;
@@ -300,15 +300,15 @@ namespace ExportReaperMarkersToGrandMA2
             switch (e.State)
             {
                 case SFTPProgressStatus.Uploading:
-                    ConsoleOutput("Die Datei wird hochgeladen... Bitte warten...\n", Color.Black, FontStyle.Bold);
+                    ConsoleOutput("FTP: Die Datei wird hochgeladen... Bitte warten...\n", Color.Black, FontStyle.Bold);
                     break;
 
                 case SFTPProgressStatus.Uploaded:
-                    ConsoleOutput("Die Datei wurde erfolgreich hochgeladen!\n", Color.Green, FontStyle.Bold);
+                    ConsoleOutput("FTP: Die Datei wurde erfolgreich hochgeladen!\n", Color.Green, FontStyle.Bold);
                     break;
 
                 case SFTPProgressStatus.Refused:
-                    ConsoleOutput("Die Datei konnte nicht hochgeladen werden!\n", Color.Red, FontStyle.Bold);
+                    ConsoleOutput("FTP: Die Datei konnte nicht hochgeladen werden!\n", Color.Red, FontStyle.Bold);
                     break;
 
                 default:

@@ -1,6 +1,46 @@
 <html>
 <body>
-<p><h1>Anleitung:</h1><br>Folgende Dinge m&uumlssen beachtet werden: </p>
+<h1>Anleitung:</h1>
+
+
+<p>In diesem Dokument findest du alle Schritte und Hilfen, die du benötigst um einwandfrei deine Reaper Marker in deine GrandMA2-Konsole zu importieren! <br>
+Hier findest du eine kleine Übersicht der Punkte:</p>
+
+<ol>
+    <li>Reaper-Datei ausw&aumlhlen</li>
+    <li>Marker bearbeiten</li>
+    <li>Sequenzeinstellungen bearbeiten</li>
+    <li>Executoreinstellungen bearbeiten</li>
+    <li>Timecodeeinstellungen bearbeiten</li>
+    <li>Abspeichern des Timecodes</li>
+    <li>Netzwerk Upload</li>
+    <ol>
+        <li>Erstellen der Sequenz via Netzwerk</li>
+        <li>Erstellen des Timecodes via Netzwerk</li>
+        <li>Erstellen der Sequenz und des Timecodes via Netzwerk</li>
+    </ol>
+</ol>
+
+<p><h3>1. Reaper-Datei ausw&aumlhlen:</h3>
+Dieses Progamm kann *.csv-Dateien einlesen, die einem bestimmten Format folgen. Das Format muss wie folgt aussehen:<br>
+<b>MarkerID, Name, Zeitpunkt</b><br>
+Die DAW-Reaper erstellt solche Dateien automatisch, wenn man Marker exportiert. Im Region/Marker-Manager werden die Regionen und Marker angezeigt, die man erstellt hat.<br>
+Dort dürfen nur die Marker aktiviert sein. Mit Rechts-Klick "Export Region and Markers..." können die Marker exportiert werden.<br>
+Zuvor muss darauf geachtet werden, dass das Format der "Start"-Zeit eines der folgenden Formate hat:<br>
+<li>Hours:Minutes:Seconds:Frames</li>
+<li>Minutes:Seconds</li>
+Diese Formate werden beim Öffnen der *.csv-Dateien unterstützt.<br>
+<b>Hinweis:</b> Es wird empfohlen das Format "Minutes:Seconds" zu verwenden, da dies am genausten ist.<br>
+Die *.csv-Datei kann nun mit dem Öffnen-Button ausgew&aumlhlt werden.<br>
+Danach erscheint ein Fenster, wo man das Format der Zeit in der *.csv-Datei angeben muss.<br>
+Bei dem Punkt <b>Hours:Minutes:Seconds:Frames</b> muss zusätzlich noch die Framerate des Reaper-Projektes angegeben werden, da sonst die Zeitpunkte nicht berechnet werden können.<br>
+Dies kann man in Reaper unter File -> Project-Settings -> Video einstellen/ablesen. Es wird eine Maximale Framerate von 30 FPS unterstützt. Ist die Framerate in Reaper höher als 30 FPS eingestellt,<br>
+muss sie runtergestellt werden und die Marker müssen neu exportiert werden.
+Wurden die Marker erfolgreich importiert, erscheint eine Tabelle mit den Markern und weiter Einstellungsmöglichkeiten.
+</p>
+
+
+
 <p><h3>1. Reaper-Datei ausw&aumlhlen:</h3>
 <li>Es muss eine von Reaper erstellte Datei ausgew&aumlhlt werden</li>
 <li>Die Timeline muss auf dem Format: <b>'Hours:Minutes:Seconds:Frames'</b> stehen (Rechtsklick auf die Timeline)</li>

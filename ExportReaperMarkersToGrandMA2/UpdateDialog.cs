@@ -36,17 +36,17 @@ namespace ExportReaperMarkersToGrandMA2
                 Changelog += response[i] + "\n";
             }
 
-            if (float.Parse(response[1]) > float.Parse(Program.version))
+            if (float.Parse(response[1]) > float.Parse(Program.Version.ToString()))
             {
                 lblInfo.Text = "Sie benutzten eine alte Version! Es ist bereits eine aktuellere Version verfügbar!" +
                     "\n" +
-                    "Ihre Version: " + Program.version +"\n" +
+                    "Ihre Version: " + Program.Version + "\n" +
                     "Neue Version: " + response[1] + "\n" +
                     "Wollen Sie die neue Version herunterladen?";
                 richTextBox1.Text = Changelog;
                 button1.Enabled = true;
             }
-            else if(float.Parse(response[1]) <= float.Parse(Program.version))
+            else if(float.Parse(response[1]) <= float.Parse(Program.Version.ToString()))
             {
                 lblInfo.Text = "Sie benutzen die aktuellste Verison!";
             }
