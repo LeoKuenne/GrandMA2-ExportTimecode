@@ -1,57 +1,160 @@
 <html>
+<head>
+
+<style type="text/css" data-title="text/css">
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        width: 80%;
+        margin-left: 5vw;
+    }
+    section {
+        line-height: 1.4;
+        margin-left: 2vw;
+        margin-top: 5vh;
+    }
+    .warning {
+        font-style: bold;
+        color: red;
+    }
+</style>
+
+</head>
 <body>
 <h1>Anleitung:</h1>
 
+<section>
+    <p>In diesem Dokument findest du alle Schritte und Hilfen, die du ben&ouml;tigst um einwandfrei deine Reaper Marker in deine GrandMA2-Konsole zu importieren! <br>
+    Hier findest du eine kleine &uuml;bersicht der Punkte:</p>
 
-<p>In diesem Dokument findest du alle Schritte und Hilfen, die du benötigst um einwandfrei deine Reaper Marker in deine GrandMA2-Konsole zu importieren! <br>
-Hier findest du eine kleine Übersicht der Punkte:</p>
-
-<ol>
-    <li>Reaper-Datei ausw&aumlhlen</li>
-    <li>Marker bearbeiten</li>
-    <li>Sequenzeinstellungen bearbeiten</li>
-    <li>Executoreinstellungen bearbeiten</li>
-    <li>Timecodeeinstellungen bearbeiten</li>
-    <li>Abspeichern des Timecodes</li>
-    <li>Netzwerk Upload</li>
     <ol>
-        <li>Erstellen der Sequenz via Netzwerk</li>
-        <li>Erstellen des Timecodes via Netzwerk</li>
-        <li>Erstellen der Sequenz und des Timecodes via Netzwerk</li>
+        <li>Reaper-Datei ausw&auml;hlen</li>
+        <li>Marker bearbeiten</li>
+        <li>Sequenzeinstellungen bearbeiten</li>
+        <li>Executoreinstellungen bearbeiten</li>
+        <li>Timecodeeinstellungen bearbeiten</li>
+        <li>Abspeichern des Timecodes</li>
+        <li>Erstellen Timecodes in der GrandMA2-Konsole</li>
+        <li>Netzwerk Upload</li>
+        <ol>
+            <li>Erstellen der Sequenz via Netzwerk</li>
+            <li>Erstellen des Timecodes via Netzwerk</li>
+            <li>Erstellen der Sequenz und des Timecodes via Netzwerk</li>
+        </ol>
     </ol>
-</ol>
+    
+    <p class="warning">Hinweis: Bitte hab Verst&auml;ndniss, wenn dieses Dokument noch nicht vollst&auml;ndig ist. Es wird stetig vervollst&auml;ndigt! Falls du dringende Fragen hast, kontaktiere mich unter: lk@lightemotions.net</p>
+</section>
 
-<p><h3>1. Reaper-Datei ausw&aumlhlen:</h3>
-Dieses Progamm kann *.csv-Dateien einlesen, die einem bestimmten Format folgen. Das Format muss wie folgt aussehen:<br>
-<b>MarkerID, Name, Zeitpunkt</b><br>
-Die DAW-Reaper erstellt solche Dateien automatisch, wenn man Marker exportiert. Im Region/Marker-Manager werden die Regionen und Marker angezeigt, die man erstellt hat.<br>
-Dort dürfen nur die Marker aktiviert sein. Mit Rechts-Klick "Export Region and Markers..." können die Marker exportiert werden.<br>
-Zuvor muss darauf geachtet werden, dass das Format der "Start"-Zeit eines der folgenden Formate hat:<br>
-<li>Hours:Minutes:Seconds:Frames</li>
-<li>Minutes:Seconds</li>
-Diese Formate werden beim Öffnen der *.csv-Dateien unterstützt.<br>
-<b>Hinweis:</b> Es wird empfohlen das Format "Minutes:Seconds" zu verwenden, da dies am genausten ist.<br>
-Die *.csv-Datei kann nun mit dem Öffnen-Button ausgew&aumlhlt werden.<br>
-Danach erscheint ein Fenster, wo man das Format der Zeit in der *.csv-Datei angeben muss.<br>
-Bei dem Punkt <b>Hours:Minutes:Seconds:Frames</b> muss zusätzlich noch die Framerate des Reaper-Projektes angegeben werden, da sonst die Zeitpunkte nicht berechnet werden können.<br>
-Dies kann man in Reaper unter File -> Project-Settings -> Video einstellen/ablesen. Es wird eine Maximale Framerate von 30 FPS unterstützt. Ist die Framerate in Reaper höher als 30 FPS eingestellt,<br>
-muss sie runtergestellt werden und die Marker müssen neu exportiert werden.
-Wurden die Marker erfolgreich importiert, erscheint eine Tabelle mit den Markern und weiter Einstellungsmöglichkeiten.
-</p>
+<section>
+    <h3>1. Reaper-Datei ausw&auml;hlen:</h3>
+    <p>Dieses Progamm kann *.csv-Dateien einlesen, die einem bestimmten Format folgen. Das Format muss wie folgt aussehen:<br>
+    <b>MarkerID, Name, Zeitpunkt</b><br>
+    </p>
+    <p>
+    Die DAW-Reaper erstellt solche Dateien automatisch, wenn man Marker exportiert. Im Region/Marker-Manager werden die Regionen und Marker angezeigt, die man erstellt hat.
+    Dort d&uuml;rfen nur die Marker aktiviert sein. Mit Rechts-Klick "Export Region and Markers..." k&ouml;nnen die Marker exportiert werden.
+    Zuvor muss darauf geachtet werden, dass das Format der "Start"-Zeit eines der folgenden Formate hat:
+    <ul>
+        <li>Hours:Minutes:Seconds:Frames</li>
+        <li>Minutes:Seconds</li>
+        <li>Absolute Frames</li>
+    </ul>
+    Diese Formate werden beim &Ouml;ffnen der *.csv-Dateien unterst&uuml;tzt.<br>
+    <b>Hinweis:</b> Es wird empfohlen das Format "Minutes:Seconds" zu verwenden, da dies am genausten ist.
+    </p>
+    <p>
+    Die *.csv-Datei kann nun mit dem &Ouml;ffnen-Button ausgew&auml;hlt werden.
+    Danach erscheint ein Fenster, wo man das Format der Zeit in der *.csv-Datei angeben muss.
+    Bei dem Punkt <b>Hours:Minutes:Seconds:Frames</b> muss zus&auml;tzlich noch die Framerate des Reaper-Projektes angegeben werden, da sonst die Zeitpunkte nicht berechnet werden k&ouml;nnen.
+    Dies kann man in Reaper unter <b>File -> Project-Settings -> Video</b> einstellen/ablesen.
+    Es wird eine Maximale Framerate von 30 FPS unterst&uuml;tzt. Ist die Framerate in Reaper h&ouml;her als 30 FPS eingestellt, muss sie runtergestellt werden und die Marker m&uuml;ssen neu exportiert werden.
+    </p>
+    Wurden die Marker erfolgreich importiert, erscheint eine Tabelle mit den Markern und weiter Einstellungsm&ouml;glichkeiten.
+</section>
 
 
+<section>
+    <h3>2. Marker bearbeiten</h3>
+    <p>
+    Du kannst deiner Marker nun beliebig anpassen. In der Spalte "Cue" kannst du die Cue-Nummer angeben, als die der Marker gespeichert werden soll. Diese sollten nicht ver&auml;ndert werden. Unter der Spalte "Name" kannst du den Namen angeben. Dabei sind keine Sonderzeichen erlaubt! Unter "Time" kannst du den Zeitpunkt des Frames anpassen. Achte dabei darrauf, dass du das richtige Format eingibst.
+    Mit einem Rechts-Klick auf den Spaltennamen kannst du zwischen folgenden Zeitdarstellungen w&auml;hlen:
+    <ul>
+        <li>Hours:Minutes:Seconds:Milliseconds</li>
+        <li>Hours:Minutes:Seconds:Frames</li>
+        <li>Total Frames</li>
+    </ul>
+    
+    </p>
+</section>
 
-<p><h3>1. Reaper-Datei ausw&aumlhlen:</h3>
-<li>Es muss eine von Reaper erstellte Datei ausgew&aumlhlt werden</li>
-<li>Die Timeline muss auf dem Format: <b>'Hours:Minutes:Seconds:Frames'</b> stehen (Rechtsklick auf die Timeline)</li>
-</p>
-<p><h3>2. Namensgebung der Pool-Items:</h3>
-<li>M&oumlglichst keine Lehrzeichen verwenden</li>
-</p>
-<p><h3>3. Speichern der Macro-Datei und der Timecode-Datei:</h3>
-<li>GrandMA2 Ordner ausw&aumlhlen, keine Unterordner z.B.: <b>X:/gma2/</b> oder <b>C:/ProgramData/MA Lighting Technologies/grandma/gma2_V_3.5</b></li>
-<li>Wird kein externes Speichermedium ausgew&aumlhlt, so muss im Macro die 3. letze Zeile <b>"SelectDrive 4"</b> zu <b>"SelectDrive 1"</b> ge&aumlndert werden</li>
-<li>Ist an der Konsole/Session mehr als ein USB-Stick angeschlossen, so muss im Macro die 3. letze Zeile <b>"SelectDrive 4"</b> zu <b>"SelectDrive X"</b> ge&aumlndert werden. Dabei ist X die Anzahl an USB-Sticks plus drei, oder die Tab-Position des USB-Sticks im Backup-Men&uuml!</li>
-</p>
+<section>
+    <h3>3. Sequenzeinstellungen bearbeiten</h3>
+    <p>
+    Auf der rechten Seite des Fensters kannst du im oberen drittel, Einstellungen f&uuml;r deine Sequenz t&auml;tigen. Dabei kannst du die Nummer des Sequenz-Pools ausw&auml;hlen, wo die Sequenz gespeichert werden soll. <b>Achtung: Bestehende Sequenzen werden &uuml;berschrieben! Achte also darauf, dass das Pool-Item leer ist.</b>
+    Zus&auml;tzlich kannst du hier den Namen der Sequenz eingeben. Es sind keine Sonderzeichen erlaubt!.
+    </p>
+</section>
+
+<section>
+    <h3>4. Executoreinstellungen bearbeiten</h3>
+    <p>
+    Auf der rechten Seite des Fensters kannst du im mittleren drittel, Einstellungen f&uuml;r deinen Executor t&auml;tigen. Dabei kannst du die Nummer der Page sowie den Platz ausw&auml;hlen, wo der Executor gesetzt werden soll. <b>Achtung: Bestehende Executor werden &uuml;berschrieben! Achte also darauf, dass der Executor leer ist.</b>
+    </p>
+</section>
+
+<section>
+    <h3>5. Timecodeeinstellungen bearbeiten</h3>
+    <p>
+    Auf der rechten Seite des Fensters kannst du im unteren drittel, Einstellungen f&uuml;r dein Timecode-Poolitem t&auml;tigen. Dabei kannst du die Nummer des Items ausw&auml;hlen, wo der Timecode gespeichert werden soll. <b>Achtung: Bestehende Timecode-Poolitems werden &uuml;berschrieben! Achte also darauf, dass das Poolitem leer ist.</b>
+    Zudem kannst du hier die Framerate anpassen, mit der die Marker exportiert werden sollen. Dabei wird nur die Framezahl angepasst und der Zeitpunkt bleibt gleich. Falls du f&uuml;r alle Marker, den Trigger-Modus &auml;ndern m&ouml;chtest, kannst du dies hier tun. Dabei werden alle &auml;nderungen die du vorher gemacht hast &uuml;berschrieben!
+    </p>
+</section>
+
+<section>
+    <h3>6. Abspeichern des Timecodes</h3>
+    <p>
+    Hast du alle Einstellungen get&auml;tigt, kannst du in der unteren rechten Ecke des Fensters, die Datei nun speichern. W&auml;hle entweder den "gma2"-Ordner auf deinem USB-Stick oder auf deinem PC aus!
+    </p>
+</section>
+
+<section>
+    <h3>7. Erstellen Timecodes in der GrandMA2-Konsole</h3>
+    <p>
+    Ist der USB-Stick in die Konsole eingesteckt, importiere das Makro mit dem Namen deines Timecode-Poolitem. Dies kannst du unter <b>Setup -> Show -> Import Export -> Import -> Macros</b> tun. W&auml;hle dort den USB-Stick aus.
+    Es wird ein Macro importiert, was nun einfach ausgef&uuml;hrt werden muss. Dieses erstellt die Sequenz und den Timecode!
+    </p>
+</section>
+
+
+<section>
+    <h3>8. Netzwerk-Upload</h3>
+    <p class="warning">Achtung: Diese Funktion ist noch in der Beta-Phase. Es kann zu Fehlern f&uuml;hren!</p>
+    <p>
+    In diesem Abschnitt findest du alle Informationen die du brauchst um einen Netzwerk-Upload deiner Marker durchzuf&uuml;hren.
+    Das Fenster kannst du unter <b>Erweiterungen -> Netzwerk-Upload</b> &ouml;ffnen.
+    </p>
+    
+    <section>
+        <h3>1. Erstellen der Sequenz via Netzwerk</h3>
+        <p>
+            In der GrandMA2-Konsole muss Telnet aktiviert sein.
+        </p>
+    </section>
+    
+    <section>
+        <h3>2. Erstellen des Timecodes via Netzwerk</h3>
+        <p>
+        </p>
+    </section>
+    
+    <section>
+        <h3>3. Erstellen der Sequenz und des Timecodes via Netzwerk</h3>
+        <p>
+            In der GrandMA2-Konsole muss Telnet aktiviert sein.
+        </p>
+    </section>
+    
+</section>
+
 </body>
 </html>

@@ -7,29 +7,24 @@ using System.Threading.Tasks;
 
 namespace ExportReaperMarkersToGrandMA2
 {
-    public enum TimestampFormat
-    {
-        HH_MM_SS_ss,
-        TotalFrames
-    }
 
     public class Timestamp
     {
-        public TimestampFormat format;
+        public TimelineFormat format;
 
         public int hours;
         public int minutes;
         public int seconds;
         public int milliseconds;
 
-        public Timestamp(int hours, int minutes, int seconds, int milliseconds)
+        public Timestamp(int hours, int minutes, int seconds, int milliseconds, TimelineFormat format)
         {
             this.hours = hours;
             this.minutes = minutes;
             this.seconds = seconds;
             this.milliseconds = milliseconds;
 
-            this.format = TimestampFormat.HH_MM_SS_ss;
+            this.format = format;
         }
         
         public int GetFrameWithFPS(FPS fps)
@@ -43,14 +38,35 @@ namespace ExportReaperMarkersToGrandMA2
             return (int)(frames + seconds + minutes + hours);
         }
 
+        public static Timestamp GetTimestampFromFrame(int frame, FPS fps, TimelineFormat format)
+        {
+            int tempFrames = frame;
+
+            int Hours = (int)Math.Floor(tempFrames / (60D * 60 * (int)fps));
+            tempFrames -= 60 * 60 * (int)fps * Hours;
+
+            int Minutes = (int)Math.Floor(tempFrames / (60D * (int)fps));
+            tempFrames -= 60 * (int)fps * Minutes;
+
+            int Seconds = (int)Math.Floor((double)tempFrames / (int)fps);
+            tempFrames -= (int)fps * Seconds;
+
+            int Milliseconds = (int) (tempFrames * Math.Round(1000D / (int)fps));
+
+            return new Timestamp(Hours, Minutes, Seconds, Milliseconds, format);
+        }
+
         public override string ToString()
         {
             switch (format)
             {
-                case TimestampFormat.HH_MM_SS_ss:
+                case TimelineFormat.HH_MM_SS:
                     return string.Format("{0:0}:{1:00}:{2:00}.{3:000}", hours, minutes, seconds, milliseconds);
-                case TimestampFormat.TotalFrames:
+                case TimelineFormat.TotalFrames:
                     return GetFrameWithFPS(Timecode.current.GetFrameRate()).ToString();
+                case TimelineFormat.HH_MM_SS_FF:
+                    int frames = (int) (milliseconds * ((int)Timecode.current.GetFrameRate() / 1000D));
+                    return string.Format("{0:0}:{1:00}:{2:00}:{3:00}", hours, minutes, seconds, frames);
                 default:
                     return string.Format("{0:0}:{1:00}:{2:00}.{3:000}", hours, minutes, seconds, milliseconds);
             }
@@ -69,17 +85,17 @@ namespace ExportReaperMarkersToGrandMA2
             
             switch (timelineFormat)
             {
-                case TimelineFormat.MM_SS:
+                case TimelineFormat.HH_MM_SS:
 
                     if (!Regex.IsMatch(value, @"\b(\d{1,2}[:])?\d{1,2}[:]\d{1,2}[.]\d{1,3}\b"))
                     {
-                        throw new TimelineFormatMatchException(TimelineFormat.MM_SS, value);
+                        throw new TimelineFormatMatchException(TimelineFormat.HH_MM_SS, value);
                     }
 
                     string[] Second = Times[Times.Length - 1].Split('.');
                     
                     if (Second.Length != 2)
-                        throw new TimelineFormatMatchException(TimelineFormat.MM_SS, value);
+                        throw new TimelineFormatMatchException(TimelineFormat.HH_MM_SS, value);
 
                     Milliseconds = int.Parse(Second[1]);
                     Seconds = int.Parse(Second[0]);
@@ -118,13 +134,15 @@ namespace ExportReaperMarkersToGrandMA2
                     Hours = int.Parse(Times[0]);
 
                     break;
+                case TimelineFormat.TotalFrames:
+                    return GetTimestampFromFrame(int.Parse(value), fps, timelineFormat);
 
                 default:
                     throw new TimelineFormatException("Timeline Format not implemented or damaged! Timeline: " + value);
 
             }
 
-            return new Timestamp(Hours, Minutes, Seconds, Milliseconds);
+            return new Timestamp(Hours, Minutes, Seconds, Milliseconds, timelineFormat);
         }
 
         public static explicit operator Timestamp(string value)

@@ -21,14 +21,14 @@ namespace ExportReaperMarkersToGrandMA2
 
         [Browsable(false)]
         public TimelineFormat TimelineFormat { get; set; }
+        [Browsable(false)]
+        public int Index { get; set; }
+        [Browsable(false)]
+        public int Seq { get; set; }
 
+        public int Cue { get; set; }
         public string Name { get; set; }
         public Timestamp Time { get; set; }
-        //// Die Times Variable enthält den Originalen Zeitpunkt der eingelesen wird. Sobald die Framerate angepasst wird, wird anhand der Originaldaten der neue Framezeitpunkt des Events berechnet. Der Zeitpunkt des Events verschiebt sich nicht!
-        //public string[] Times { get; set; }
-        public int Seq { get; set; }
-        public int Cue { get; set; }
-        public int Index { get; set; }
         public TimecodeEventTrigger trigger { get; set; }
 
         private FPS FrameRate;

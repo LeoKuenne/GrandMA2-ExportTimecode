@@ -70,6 +70,7 @@ namespace ExportReaperMarkersToGrandMA2
             this.updatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripTimeHeader = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.hoursMinutesSecondsMillisecondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutesSecondsFramesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.totalFramesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gB_Open.SuspendLayout();
             this.tableLayoutPanel_Open.SuspendLayout();
@@ -552,9 +553,11 @@ namespace ExportReaperMarkersToGrandMA2
             // 
             this.contextMenuStripTimeHeader.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.hoursMinutesSecondsMillisecondsToolStripMenuItem,
+            this.minutesSecondsFramesToolStripMenuItem,
             this.totalFramesToolStripMenuItem});
             this.contextMenuStripTimeHeader.Name = "contextMenuStripTimeHeader";
-            this.contextMenuStripTimeHeader.Size = new System.Drawing.Size(269, 48);
+            this.contextMenuStripTimeHeader.Size = new System.Drawing.Size(269, 92);
+            this.contextMenuStripTimeHeader.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripTimeHeader_Opening);
             // 
             // hoursMinutesSecondsMillisecondsToolStripMenuItem
             // 
@@ -565,6 +568,13 @@ namespace ExportReaperMarkersToGrandMA2
             this.hoursMinutesSecondsMillisecondsToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
             this.hoursMinutesSecondsMillisecondsToolStripMenuItem.Text = "Hours:Minutes:Seconds:Milliseconds";
             this.hoursMinutesSecondsMillisecondsToolStripMenuItem.Click += new System.EventHandler(this.hoursMinutesSecondsMillisecondsToolStripMenuItem_Click);
+            // 
+            // minutesSecondsFramesToolStripMenuItem
+            // 
+            this.minutesSecondsFramesToolStripMenuItem.Name = "minutesSecondsFramesToolStripMenuItem";
+            this.minutesSecondsFramesToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
+            this.minutesSecondsFramesToolStripMenuItem.Text = "Hours:Minutes:Seconds:Frames";
+            this.minutesSecondsFramesToolStripMenuItem.Click += new System.EventHandler(this.hoursMinutesSecondsFramesToolStripMenuItem_Click);
             // 
             // totalFramesToolStripMenuItem
             // 
@@ -657,6 +667,7 @@ namespace ExportReaperMarkersToGrandMA2
         private System.Windows.Forms.ToolStripMenuItem hoursMinutesSecondsMillisecondsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem totalFramesToolStripMenuItem;
         private System.Windows.Forms.ComboBox cB_TcFrameRate;
+        private System.Windows.Forms.ToolStripMenuItem minutesSecondsFramesToolStripMenuItem;
     }
 }
 

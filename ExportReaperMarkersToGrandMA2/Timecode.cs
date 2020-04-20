@@ -12,7 +12,8 @@ namespace ExportReaperMarkersToGrandMA2
     public enum TimelineFormat
     {
         HH_MM_SS_FF = 0,
-        MM_SS = 1
+        HH_MM_SS = 1,
+        TotalFrames = 2
     }
 
     public enum FPS
@@ -141,7 +142,7 @@ namespace ExportReaperMarkersToGrandMA2
             nodeTimecodeAttribute_Name.Value = GetTcName();
 
             XmlAttribute nodeTimecodeAttribute_FramRate = xmlDoc.CreateAttribute("frame_format");
-            nodeTimecodeAttribute_FramRate.Value = GetFrameRate().ToString() + " FPS";
+            nodeTimecodeAttribute_FramRate.Value = ((int)GetFrameRate()).ToString() + " FPS";
 
             nodeTimecode.Attributes.Append(nodeTimecodeAttribute_Index);
             nodeTimecode.Attributes.Append(nodeTimecodeAttribute_Name);

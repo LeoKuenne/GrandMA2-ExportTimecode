@@ -63,7 +63,7 @@ namespace ExportReaperMarkersToGrandMA2
                     return;
                 }
 
-                TimelineFormat timelineFormat = TimelineFormat.HH_MM_SS_FF;
+                TimelineFormat timelineFormat = TimelineFormat.HH_MM_SS;
                 FPS baseFramerate = FPS.FPS25;
 
                 using (var form = new TimecodeEventTimelineForm(csv.ToArray()[1]))
@@ -126,8 +126,10 @@ namespace ExportReaperMarkersToGrandMA2
                 dataGridView1.Columns.RemoveAt(dataGridView1.Columns.Count-1);
                 dataGridView1.Columns.Add(triggerColumn);
 
-                timelineFormat = TimelineFormat.HH_MM_SS_FF;
-                
+                timecode.TimelineFormat = TimelineFormat.HH_MM_SS;
+
+                updateTimelineFormat(timecode.TimelineFormat);
+
                 sr.Close();
             }
 
@@ -165,12 +167,19 @@ namespace ExportReaperMarkersToGrandMA2
         private void num_SeqItem_ValueChanged(object sender, EventArgs e)
         {
             timecode.SetSeq((int) num_SeqItem.Value);
-            dataGridView1.DataSource = timecode.TimecodeEvents.ToList();
+            dataGridView1.Refresh();
         }
 
         private void txt_SeqName_TextChanged(object sender, EventArgs e)
         {
-            timecode.SetSeqName(txt_SeqName.Text);
+            if (!Regex.IsMatch(txt_SeqName.Text, @"[^A-Za-z0-9\s]"))
+            {
+                timecode.SetSeqName(txt_SeqName.Text);
+            }
+            else
+            {
+                MessageBox.Show("Es dürfen keine Sonderzeichen verwendet werden!\n", "Fehler bei der Eingabe!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void num_ExecPage_ValueChanged(object sender, EventArgs e)
@@ -196,17 +205,24 @@ namespace ExportReaperMarkersToGrandMA2
 
         private void txt_TcName_TextChanged(object sender, EventArgs e)
         {
-            timecode.SetTcName(txt_TcName.Text);
+            if (!Regex.IsMatch(txt_SeqName.Text, @"[^A-Za-z0-9\s]"))
+            {
+                timecode.SetTcName(txt_TcName.Text);
+            }
+            else
+            {
+                MessageBox.Show("Es dürfen keine Sonderzeichen verwendet werden!\n", "Fehler bei der Eingabe!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         
         private void cB_TcDefaultTrigger_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (cB_TcDefaultTrigger.SelectedIndex)
+            switch ((TimecodeEventTrigger) cB_TcDefaultTrigger.SelectedItem)
             {
-                case 0:
+                case TimecodeEventTrigger.Goto:
                     timecode.SetDefaultTrigger(TimecodeEventTrigger.Goto);
                     break;
-                case 1:
+                case TimecodeEventTrigger.Go:
                     timecode.SetDefaultTrigger(TimecodeEventTrigger.Go);
                     break;
                 default:break;
@@ -237,10 +253,10 @@ namespace ExportReaperMarkersToGrandMA2
         private void dataGridView1_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             string name = (string)e.FormattedValue;
-            
-            switch (e.ColumnIndex)
+
+            switch (dataGridView1.Columns[e.ColumnIndex].Name)
             {
-                case 0: //Cue Name
+                case "Name": //Cue Name
 
                     if(!Regex.IsMatch(name, @"[^A-Za-z0-9\s]"))
                     {
@@ -254,7 +270,7 @@ namespace ExportReaperMarkersToGrandMA2
 
                     break;
 
-                case 1:
+                case "Time":
 
                     try
                     {
@@ -272,7 +288,7 @@ namespace ExportReaperMarkersToGrandMA2
                     e.Cancel = false;
                     break;
 
-                case 2:
+                case "Seq":
                     if (!Regex.IsMatch(name, @"[^0-9]") && int.Parse(name) > 0 )
                     {
                         e.Cancel = false;
@@ -284,7 +300,7 @@ namespace ExportReaperMarkersToGrandMA2
                     }
                     break;
 
-                case 3:
+                case "Cue":
                     if (!Regex.IsMatch(name, @"[^0-9]") && int.Parse(name) > 0)
                     {
                         e.Cancel = false;
@@ -296,7 +312,7 @@ namespace ExportReaperMarkersToGrandMA2
                     }
                     break;
 
-                case 4:
+                case "Index":
                     if (!Regex.IsMatch(name, @"[^0-9]"))
                     {
                         e.Cancel = false;
@@ -317,9 +333,9 @@ namespace ExportReaperMarkersToGrandMA2
         
         private void dataGridView1_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
         {
-            switch (e.ColumnIndex)
+            switch (dataGridView1.Columns[e.ColumnIndex].Name)
             {
-                case 1:
+                case "Time":
 
                     try
                     {
@@ -346,41 +362,70 @@ namespace ExportReaperMarkersToGrandMA2
 
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Right && e.ColumnIndex == 1)
+            if(e.Button == MouseButtons.Right && dataGridView1.Columns[e.ColumnIndex].Name == "Time")
                 contextMenuStripTimeHeader.Show(dataGridView1, dataGridView1.PointToClient(Cursor.Position));
         }
 
         private void hoursMinutesSecondsMillisecondsToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            foreach(TimecodeEvent timecodeEvent in timecode.TimecodeEvents)
-            {
-                timecodeEvent.Time.format = TimestampFormat.HH_MM_SS_ss;
-            }
-
-            hoursMinutesSecondsMillisecondsToolStripMenuItem.Checked = true;
-            totalFramesToolStripMenuItem.Checked = false;
+            updateTimelineFormat(TimelineFormat.HH_MM_SS);
 
             dataGridView1.Refresh();
         }
 
         private void totalFramesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (TimecodeEvent timecodeEvent in timecode.TimecodeEvents)
-            {
-                timecodeEvent.Time.format = TimestampFormat.TotalFrames;
-            }
+            updateTimelineFormat(TimelineFormat.TotalFrames);
 
-            hoursMinutesSecondsMillisecondsToolStripMenuItem.Checked = false;
-            totalFramesToolStripMenuItem.Checked = true;
 
             dataGridView1.Refresh();
+        }
+        private void hoursMinutesSecondsFramesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            updateTimelineFormat(TimelineFormat.HH_MM_SS_FF);
+
+            dataGridView1.Refresh();
+        }
+
+
+        public void updateTimelineFormat(TimelineFormat format)
+        {
+            foreach (TimecodeEvent timecodeEvent in timecode.TimecodeEvents)
+            {
+                timecodeEvent.Time.format = format;
+            }
+
+
+            hoursMinutesSecondsMillisecondsToolStripMenuItem.Checked = false;
+            totalFramesToolStripMenuItem.Checked = false;
+            minutesSecondsFramesToolStripMenuItem.Checked = false;
+
+            switch (format)
+            {
+                case TimelineFormat.HH_MM_SS_FF:
+                    minutesSecondsFramesToolStripMenuItem.Checked = true;
+                    break;
+                case TimelineFormat.HH_MM_SS:
+                    hoursMinutesSecondsMillisecondsToolStripMenuItem.Checked = true;
+                    break;
+                case TimelineFormat.TotalFrames:
+                    totalFramesToolStripMenuItem.Checked = true;
+                    break;
+            }
+
+
         }
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             if(e.Context != DataGridViewDataErrorContexts.Parsing)
                 e.ThrowException = true;
+        }
+
+        private void contextMenuStripTimeHeader_Opening(object sender, CancelEventArgs e)
+        {
+            dataGridView1.EndEdit();
         }
     }
 }

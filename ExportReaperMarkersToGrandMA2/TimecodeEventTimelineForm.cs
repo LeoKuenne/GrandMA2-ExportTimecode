@@ -47,10 +47,13 @@ namespace ExportReaperMarkersToGrandMA2
         {
             switch ((TimelineFormat) comboBox1.SelectedValue)
             {
+                case TimelineFormat.TotalFrames:
+                    comboBox2.Enabled = true;
+                    break;
                 case TimelineFormat.HH_MM_SS_FF:
                     comboBox2.Enabled = true;
                     break;
-                case TimelineFormat.MM_SS:
+                case TimelineFormat.HH_MM_SS:
                     comboBox2.Enabled = false;
                     break;
                 default:

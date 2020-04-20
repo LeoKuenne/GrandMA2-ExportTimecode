@@ -32,8 +32,8 @@
     <PublisherName>Leo Künne</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>1.6.4.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.6.5.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -199,6 +199,9 @@
     <None Include="TextFile1.ppk" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Help.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
     <Content Include="icon_ZiU_icon.ico" />
     <Content Include="TextFile1.txt" />
